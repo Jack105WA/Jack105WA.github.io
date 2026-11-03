@@ -1055,3 +1055,9 @@ html, body {
 .inner-panel > p {
     text-align: center !important;
 }
+
+
+/* Add breathing room above the site notification. */
+#jack105wa-site-notification {
+    margin-top: 14px !important;
+}
