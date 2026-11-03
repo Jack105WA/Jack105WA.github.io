@@ -805,3 +805,91 @@ a:focus-visible {
     align-items: center;
     margin-top: 10px;
 }
+/* Shared fixed viewport layout: content scrolls independently from the sidebar. */
+html, body {
+    width: 100%; height: 100%; min-height: 0;
+    overflow: hidden !important;
+}
+#everything.levelBG {
+    display: flex; flex-direction: column; width: 100%;
+    height: 100vh; min-height: 0; padding: 18px 20px; overflow: hidden;
+}
+.site-header {
+    flex: 0 0 auto; width: 100%; max-width: none;
+    margin: 0 0 14px; text-align: left;
+}
+.site-logo h1 { font-size: clamp(34px, 4vw, 52px); }
+.site-layout {
+    display: grid; grid-template-columns: minmax(0, 1fr) 245px;
+    grid-template-areas: "content sidebar"; gap: 16px;
+    flex: 1 1 auto; width: 100%; min-height: 0; overflow: hidden;
+}
+.page-content {
+    grid-area: content; display: block; min-width: 0; min-height: 0;
+    height: 100%; margin: 0; overflow-x: hidden; overflow-y: auto;
+    overscroll-behavior: contain; scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.45) rgba(0,0,0,.15);
+}
+.page-content::-webkit-scrollbar { width: 9px; }
+.page-content::-webkit-scrollbar-track { background: rgba(0,0,0,.15); border-radius: 8px; }
+.page-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.4); border: 2px solid transparent;
+    background-clip: padding-box; border-radius: 8px;
+}
+.welcome-panel { width: 100%; min-height: 100%; margin: 0; overflow: visible; }
+.site-sidebar { grid-area: sidebar; min-width: 0; min-height: 0; height: 100%; }
+.sidebar-panel {
+    display: flex; flex-direction: column; width: 100%; height: 100%;
+    min-height: 0; padding: 16px; border-radius: 15px;
+    border: 5px solid #63351e;
+    border-image: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png") 10% round;
+    background-color: #995533; box-shadow: 0 7px 0 rgba(0,0,0,.25); color: #fff;
+}
+.sidebar-heading {
+    margin: 0 0 12px; color: var(--gold);
+    font-family: "Pusab", Arial, sans-serif; font-size: 21px;
+    font-weight: 400; text-align: center; text-shadow: 2px 2px 0 #000;
+}
+.sidebar-navigation {
+    display: flex; flex-direction: column; gap: 10px;
+    width: 100%; margin: 0;
+}
+.sidebar-navigation .nav-button { width: 100%; }
+.sidebar-stats {
+    margin-top: auto; padding-top: 16px;
+    border-top: 2px solid rgba(0,0,0,.25); overflow-wrap: anywhere;
+}
+.sidebar-stats .sidebar-heading { margin-bottom: 9px; }
+.sidebar-stats p {
+    margin: 7px 0 0; color: rgba(255,255,255,.78);
+    font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5;
+}
+.sidebar-stats strong { color: #fff; font-weight: 600; }
+.site-info-row { display: none !important; }
+.site-footer { width: 100%; margin: 18px auto 0; padding-bottom: 5px; }
+@media (max-width: 700px) {
+    #everything.levelBG { padding: 12px; }
+    .site-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-areas: "sidebar" "content"; gap: 12px;
+    }
+    .site-sidebar { height: auto; }
+    .sidebar-panel { height: auto; padding: 12px; }
+    .sidebar-heading { margin-bottom: 8px; font-size: 18px; }
+    .sidebar-navigation { flex-direction: row; gap: 9px; }
+    .sidebar-navigation .nav-button { flex: 1 1 0; min-width: 0; }
+    .sidebar-stats {
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 5px 14px; margin-top: 10px; padding-top: 9px;
+    }
+    .sidebar-stats .sidebar-heading { width: 100%; margin: 0; }
+    .sidebar-stats p { margin: 0; font-size: 10px; }
+    .welcome-panel { min-height: 100%; }
+}
+@media (max-width: 420px) {
+    #everything.levelBG { padding: 9px; }
+    .site-header { margin-bottom: 9px; }
+    .site-logo h1 { font-size: 34px; }
+    .welcome-panel { padding: 13px; }
+}
