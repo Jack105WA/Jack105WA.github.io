@@ -173,7 +173,8 @@ import {
 
         const mount = () => {
             if (!banner.isConnected) {
-                document.body.prepend(banner);
+                const pageRoot = document.getElementById("everything");
+                (pageRoot || document.body).prepend(banner);
             }
 
             render();
