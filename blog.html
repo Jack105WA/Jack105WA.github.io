@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="https://jack105wa.neocities.org/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jack105WA">
+    <meta property="og:description" content="jack105wa's personal site">
+    <meta property="og:image" content="https://jack105wa.neocities.org/assets/favicon.png">
+    <meta name="theme-color" content="#9900ff">
+
+    <title>Blog | Jack105WA</title>
+
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/gd.css">
+
+    <style>
+        .blog-post {
+            overflow-wrap: anywhere;
+        }
+
+        .blog-post p {
+            line-height: 1.6;
+        }
+
+        .blog-post .emoji {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
+        .blog-post .friend-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .blog-post .friend-link .gdButton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .blog-post .friend-link .gdButton span {
+            overflow-wrap: anywhere;
+        }
+
+        .blog-post .friend-link .emoji {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        /* Pagination row */
+        .blog-pagination {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 18px;
+            width: 100%;
+            margin: 24px 0 5px;
+            min-height: 52px;
+        }
+
+        .blog-page-info {
+            margin: 0;
+            color: #fff;
+            font-family: "Pusab", sans-serif;
+            font-size: 22px;
+            text-align: center;
+            white-space: nowrap;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .blog-pagination .page-image-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 100ms ease;
+        }
+
+        .blog-pagination .page-image-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .blog-pagination .page-image-button:not(:disabled):hover {
+            transform: scale(1.08);
+        }
+
+        .blog-pagination .page-image-button:active:not(:disabled) {
+            transform: scale(0.94);
+        }
+
+        .blog-pagination .page-image-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .blog-pagination .page-image-button:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 4px;
+            border-radius: 5px;
+        }
+
+        /* Admin button stays on the right without moving pagination */
+        .admin-image-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: transparent;
+            flex-shrink: 0;
+            text-decoration: none;
+            transition: scale 100ms ease;
+        }
+
+        .admin-image-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .admin-image-button:hover {
+            scale: 1.08;
+        }
+
+        .admin-image-button:active {
+            scale: 0.94;
+        }
+
+        .admin-image-button:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 3px;
+            border-radius: 5px;
+        }
+
+        .blog-status {
+            margin: 15px 0;
+            color: #fff;
+            font-family: "Pusab", sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 550px) {
+            .blog-pagination {
+                gap: 13px;
+                min-height: 44px;
+            }
+
+            .blog-pagination .page-image-button {
+                width: 44px;
+                height: 44px;
+            }
+
+            .blog-page-info {
+                font-size: 18px;
+            }
+
+            .admin-image-button {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .blog-pagination {
+                gap: 8px;
+            }
+
+            .blog-page-info {
+                font-size: 16px;
+            }
+
+            .admin-image-button {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+  <script type="module" src="/assets/js/notification.js"></script>
+    <div id="everything" class="levelBG">
+
+        <header class="site-header">
+            <a class="site-logo" href="/" aria-label="Jack105WA Home">
+                <h1>Blog</h1>
+            </a>
+        </header>
+
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a class="gdButton nav-button blue-button" href="/">
+                <span>Home</span>
+            </a>
+
+            <a
+                class="gdButton nav-button green-button"
+                href="/blog"
+                aria-current="page"
+            >
+                <span>Blog</span>
+            </a>
+        </nav>
+
+        <main class="page-content">
+            <section
+                class="brownBox welcome-panel"
+                aria-labelledby="blog-heading"
+            >
+                <div class="section-heading">
+                    <h2 id="blog-heading">My Blog</h2>
+                </div>
+
+                <div id="blog-posts" aria-live="polite" aria-busy="true">
+                    <p class="blog-status">Loading blog posts...</p>
+                </div>
+
+                <nav
+                    id="blog-pagination"
+                    class="blog-pagination"
+                    aria-label="Blog pages"
+                    hidden
+                >
+                    <button
+                        id="blog-previous"
+                        class="page-image-button"
+                        type="button"
+                        aria-label="Previous page"
+                        title="Previous page"
+                        disabled
+                    >
+                        <img
+                            src="/assets/emojis/GJ_undoBtn_001.png"
+                            alt=""
+                        >
+                    </button>
+
+                    <p
+                        id="blog-page-info"
+                        class="blog-page-info"
+                        aria-live="polite"
+                    >
+                        Page 1 of 1
+                    </p>
+
+                    <button
+                        id="blog-next"
+                        class="page-image-button"
+                        type="button"
+                        aria-label="Next page"
+                        title="Next page"
+                        disabled
+                    >
+                        <img
+                            src="/assets/emojis/GJ_redoBtn_001.png"
+                            alt=""
+                        >
+                    </button>
+
+                    <a
+                        class="admin-image-button"
+                        href="https://jack105wa.neocities.org/admin"
+                        aria-label="Open blog admin"
+                        title="Admin"
+                    >
+                        <img
+                            src="/assets/adminbtn.png"
+                            alt="Admin"
+                        >
+                    </a>
+                </nav>
+            </section>
+        </main>
+
+    </div>
+
+    <script type="module" src="/assets/js/blogapi.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const posts = document.getElementById("blog-posts");
+
+            if (posts) {
+                const observer = new MutationObserver(function () {
+                    posts.setAttribute("aria-busy", "false");
+
+                    if (
+                        posts.querySelector(".blog-status") &&
+                        posts.textContent.includes("Loading blog posts...")
+                    ) {
+                        posts.setAttribute("aria-busy", "true");
+                    }
+                });
+
+                observer.observe(posts, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+            }
+        });
+    </script>
+</body>
+</html>

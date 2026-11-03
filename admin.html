@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:url" content="https://jack105wa.neocities.org/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jack105WA">
+    <meta property="og:description" content="jack105wa's personal site">
+    <meta property="og:image" content="https://jack105wa.neocities.org/assets/favicon.png">
+    <meta name="theme-color" content="#9900ff">
+
+    <title>Admin | Jack105WA</title>
+
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/gd.css">
+
+    <style>
+        :root {
+            --admin-blue: #0065FD;
+            --admin-brown: #96512F;
+            --admin-border: #553019;
+            --admin-yellow: #FFD21C;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .admin-page {
+            width: min(1500px, calc(100% - 32px));
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        .admin-layout {
+            display: grid;
+            grid-template-columns:
+                minmax(220px, 0.85fr)
+                minmax(380px, 1.55fr)
+                minmax(250px, 0.95fr);
+            align-items: stretch;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .admin-column {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-card {
+            min-width: 0;
+            padding: 18px;
+            background: var(--admin-brown);
+            border: 2px solid var(--admin-border);
+            border-radius: 5px;
+            color: #fff;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-heading {
+            margin: 0 0 16px;
+            color: var(--admin-yellow);
+            font-size: clamp(19px, 1.6vw, 26px);
+            line-height: 1.3;
+            text-align: center;
+            overflow-wrap: anywhere;
+            text-shadow:
+                -1px -1px 0 #27160d,
+                1px -1px 0 #27160d,
+                -1px 1px 0 #27160d,
+                2px 2px 0 #27160d;
+        }
+
+        .admin-status {
+            margin: 10px 0;
+            color: #fff;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-muted {
+            color: #f1e6df;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .admin-divider {
+            border: 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            margin: 20px 0;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 13px;
+        }
+
+        .admin-field {
+            display: grid;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .admin-field label {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .admin-field input,
+        .admin-field textarea,
+        .admin-field select {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            padding: 10px;
+            border: 2px solid var(--admin-border);
+            border-radius: 6px;
+            background: #fff;
+            color: #222;
+            font: inherit;
+        }
+
+        .admin-field input:focus,
+        .admin-field textarea:focus,
+        .admin-field select:focus {
+            outline: 3px solid #78caff;
+            outline-offset: 2px;
+        }
+
+        .admin-field textarea {
+            min-height: 190px;
+            resize: vertical;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .admin-actions button {
+            cursor: pointer;
+        }
+
+        .admin-actions .nav-button {
+            margin: 0;
+        }
+
+        .admin-button {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .admin-button span {
+            white-space: normal;
+        }
+
+        .admin-account-card {
+            flex: 1;
+        }
+
+        .admin-info-row {
+            display: grid;
+            gap: 4px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-info-row:last-child {
+            border-bottom: 0;
+        }
+
+        .admin-info-label {
+            color: #f1d4c2;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-info-value {
+            color: #fff;
+            overflow-wrap: anywhere;
+            line-height: 1.5;
+        }
+
+        .admin-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-indicator::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            display: inline-block;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #999;
+        }
+
+        .admin-indicator.online::before {
+            background: #45ed45;
+            box-shadow: 0 0 5px rgba(69, 237, 69, 0.7);
+        }
+
+        .admin-indicator.offline::before {
+            background: #ff4545;
+        }
+
+        .admin-indicator.pending::before {
+            background: #ffd21c;
+        }
+
+        .admin-account-actions {
+            display: grid;
+            gap: 9px;
+            margin-top: 15px;
+        }
+
+        .main-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .main-navigation .nav-button {
+            margin: 0;
+        }
+
+        .admin-editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .admin-editor-header .admin-heading {
+            margin: 0;
+            text-align: left;
+        }
+
+        .admin-editor-header .admin-muted {
+            margin: 0;
+        }
+
+        .admin-help {
+            color: #f1e6df;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .admin-help code {
+            overflow-wrap: anywhere;
+        }
+
+        .admin-post-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .admin-post-item {
+            min-width: 0;
+            padding: 12px;
+            border: 2px solid var(--admin-border);
+            border-radius: 7px;
+            background: rgba(0, 0, 0, 0.17);
+            color: #fff;
+        }
+
+        .admin-post-item h3 {
+            margin: 0 0 7px;
+            color: var(--admin-yellow);
+            font-size: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-post-item p {
+            margin: 5px 0 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-post-item .admin-actions {
+            margin-top: 10px;
+        }
+
+        .admin-post-item button {
+            flex: 1 1 auto;
+        }
+
+        .admin-post-count {
+            margin: 0 0 12px;
+            color: #f1e6df;
+            font-size: 13px;
+        }
+
+        .admin-empty {
+            padding: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.35);
+            border-radius: 6px;
+            color: #f1e6df;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .admin-notice {
+            padding: 10px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.17);
+            overflow-wrap: anywhere;
+        }
+
+        .admin-notice:empty {
+            display: none;
+        }
+
+        .admin-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .admin-checkbox input {
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .site-notification-preview {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 6px;
+            background: #0065FD;
+            color: #fff;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .site-notification-preview[data-type="success"] {
+            background: #176b32;
+        }
+
+        .site-notification-preview[data-type="warning"] {
+            background: #8a5700;
+        }
+
+        .site-notification-preview[data-type="error"] {
+            background: #a52020;
+        }
+
+        .site-notification-preview[data-enabled="false"] {
+            opacity: 0.55;
+            outline: 2px dashed #fff;
+        }
+
+        .site-notification-preview a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        #notification-manager h3 {
+            color: var(--admin-yellow);
+        }
+
+        @media (min-width: 1200px) {
+            .admin-account-card {
+                min-height: 450px;
+            }
+
+            .admin-post-editor,
+            #notification-manager {
+                min-height: 600px;
+            }
+
+            .admin-posts-card {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .admin-layout {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+            }
+
+            .admin-column-right {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .admin-page {
+                width: calc(100% - 16px);
+            }
+
+            .admin-layout {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 10px;
+                margin-top: 12px;
+            }
+
+            .admin-column-right {
+                grid-column: auto;
+            }
+
+            .admin-card {
+                padding: 14px;
+            }
+
+            .admin-heading {
+                font-size: 22px;
+            }
+
+            .admin-field textarea {
+                min-height: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="everything" class="levelBG admin-page">
+        <main class="admin-layout">
+
+            <!-- LEFT COLUMN: ACCOUNT -->
+            <aside class="admin-column admin-column-left">
+                <section class="admin-card admin-account-card">
+                    <h2 class="admin-heading">Account Info</h2>
+
+                    <p id="login-status" class="admin-status" aria-live="polite">
+                        Checking authentication status...
+                    </p>
+
+                    <form id="login-form" class="admin-form">
+                        <div class="admin-field">
+                            <label for="login-email">Email</label>
+                            <input
+                                id="login-email"
+                                type="email"
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
+
+                        <div class="admin-field">
+                            <label for="login-password">Password</label>
+                            <input
+                                id="login-password"
+                                type="password"
+                                autocomplete="current-password"
+                                required
+                            >
+                        </div>
+
+                        <div class="admin-actions">
+                            <button
+                                class="gdButton nav-button blue-button admin-button"
+                                type="submit"
+                            >
+                                <span>Sign In</span>
+                            </button>
+
+                            <button
+                                class="gdButton nav-button green-button admin-button"
+                                id="forgot-password"
+                                type="button"
+                            >
+                                <span>Reset Password</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="account-information" hidden>
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Account</span>
+                            <span id="account-email" class="admin-info-value">
+                                Not signed in
+                            </span>
+                        </div>
+
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Authentication</span>
+                            <span
+                                id="account-auth-status"
+                                class="admin-info-value admin-indicator pending"
+                            >
+                                Checking...
+                            </span>
+                        </div>
+
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Administrator</span>
+                            <span
+                                id="account-admin-status"
+                                class="admin-info-value admin-indicator pending"
+                            >
+                                Checking...
+                            </span>
+                        </div>
+
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Firebase API</span>
+                            <span
+                                id="api-status"
+                                class="admin-info-value admin-indicator pending"
+                                aria-live="polite"
+                            >
+                                Checking connection...
+                            </span>
+                        </div>
+
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Firestore</span>
+                            <span
+                                id="firestore-status"
+                                class="admin-info-value admin-indicator pending"
+                                aria-live="polite"
+                            >
+                                Checking connection...
+                            </span>
+                        </div>
+
+                        <div class="admin-info-row">
+                            <span class="admin-info-label">Last API Check</span>
+                            <span id="api-last-check" class="admin-info-value">
+                                Not checked yet
+                            </span>
+                        </div>
+
+                        <div class="admin-account-actions">
+                            <button
+                                id="check-api"
+                                class="gdButton nav-button blue-button admin-button"
+                                type="button"
+                            >
+                                <span>Check API</span>
+                            </button>
+
+                            <button
+                                id="logout"
+                                class="gdButton nav-button red-button admin-button"
+                                type="button"
+                            >
+                                <span>Sign Out</span>
+                            </button>
+                        </div>
+
+                        <p id="api-message" class="admin-muted" aria-live="polite"></p>
+                    </div>
+
+                    <nav class="main-navigation" aria-label="Main navigation">
+                        <a class="gdButton nav-button blue-button" href="/">
+                            <span>Home</span>
+                        </a>
+
+                        <a class="gdButton nav-button green-button" href="/blog">
+                            <span>Blog</span>
+                        </a>
+                    </nav>
+                </section>
+            </aside>
+
+            <!-- CENTER COLUMN: BLOG EDITOR IS THE DEFAULT -->
+            <section class="admin-column admin-column-center">
+                <section
+                    id="admin-dashboard"
+                    class="admin-card admin-post-editor"
+                    hidden
+                >
+                    <section id="blog-editor-panel">
+                        <div class="admin-editor-header">
+                            <h2 id="editor-heading" class="admin-heading">
+                                Create a Post
+                            </h2>
+                            <p class="admin-muted">Blog Editor</p>
+                        </div>
+
+                        <form id="post-form" class="admin-form">
+                            <input id="post-id" type="hidden">
+
+                            <div class="admin-field">
+                                <label for="post-title">Title</label>
+                                <input id="post-title" maxlength="120" required>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="post-category">Category</label>
+                                <select id="post-category" required>
+                                    <option value="Update">Update</option>
+                                    <option value="Announcement">Announcement</option>
+                                    <option value="Advertisement">Advertisement</option>
+                                    <option value="Personal">Personal</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="post-date">Post Date</label>
+                                <input id="post-date" type="date" required>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="post-content">Post Content</label>
+                                <textarea
+                                    id="post-content"
+                                    placeholder="Write your post here..."
+                                    required
+                                ></textarea>
+
+                                <p class="admin-help">
+                                    Put each paragraph on a separate line.
+                                    You can also use:
+                                    <br>
+                                    <code>[Link text](https://example.com)</code>
+                                    <br>
+                                    <code>![Image description](/assets/example.png)</code>
+                                    <br>
+                                    Put each link or image on a separate line.
+                                </p>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="post-link-text">Footer Link Text</label>
+                                <input
+                                    id="post-link-text"
+                                    maxlength="80"
+                                    placeholder="Optional"
+                                >
+                            </div>
+
+                            <label class="admin-checkbox">
+                                <input id="post-published" type="checkbox" checked>
+                                Publish immediately
+                            </label>
+
+                            <div class="admin-actions">
+                                <button
+                                    class="gdButton nav-button blue-button"
+                                    id="save-post"
+                                    type="submit"
+                                >
+                                    <span>Save Post</span>
+                                </button>
+
+                                <button
+                                    class="gdButton nav-button green-button"
+                                    id="cancel-edit"
+                                    type="button"
+                                >
+                                    <span>Cancel</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <p
+                            id="editor-status"
+                            class="admin-status admin-notice"
+                            aria-live="polite"
+                        ></p>
+                    </section>
+
+                    <!-- NOTIFICATION EDITOR: SHOWN WHEN SELECTED -->
+                    <section id="notification-manager" hidden>
+                        <div class="admin-editor-header">
+                            <h2 class="admin-heading">Site Notification</h2>
+                            <p class="admin-muted">Notification Editor</p>
+                        </div>
+
+                        <p class="admin-muted">
+                            Edit the banner displayed on your website. Save your changes
+                            to update the notification settings in Firestore.
+                        </p>
+
+                        <form id="notification-form" class="admin-form">
+                            <label class="admin-checkbox">
+                                <input id="notification-enabled" type="checkbox">
+                                Enable site notification
+                            </label>
+
+                            <div class="admin-field">
+                                <label for="notification-message">Message</label>
+                                <textarea
+                                    id="notification-message"
+                                    maxlength="500"
+                                    placeholder="Enter your announcement..."
+                                ></textarea>
+                                <p class="admin-help">
+                                    Maximum 500 characters.
+                                </p>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="notification-type">Style</label>
+                                <select id="notification-type">
+                                    <option value="info">Information — Blue</option>
+                                    <option value="success">Success — Green</option>
+                                    <option value="warning">Warning — Orange</option>
+                                    <option value="error">Error — Red</option>
+                                </select>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="notification-link">Link URL (optional)</label>
+                                <input
+                                    id="notification-link"
+                                    type="text"
+                                    maxlength="500"
+                                    placeholder="/blog"
+                                >
+                                <p class="admin-help">
+                                    Use a site path such as <code>/blog</code> or an HTTPS URL.
+                                </p>
+                            </div>
+
+                            <div class="admin-field">
+                                <label for="notification-link-text">Link Text (optional)</label>
+                                <input
+                                    id="notification-link-text"
+                                    type="text"
+                                    maxlength="80"
+                                    placeholder="Read more"
+                                >
+                            </div>
+
+                            <div class="admin-actions">
+                                <button
+                                    class="gdButton nav-button blue-button"
+                                    id="save-notification"
+                                    type="submit"
+                                >
+                                    <span>Save Notification</span>
+                                </button>
+
+                                <button
+                                    class="gdButton nav-button green-button"
+                                    id="reload-notification"
+                                    type="button"
+                                >
+                                    <span>Reload</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr class="admin-divider">
+
+                        <h3>Preview</h3>
+
+                        <div
+                            id="notification-preview"
+                            class="site-notification-preview"
+                            data-type="info"
+                            data-enabled="false"
+                        >
+                            Notification preview
+                        </div>
+
+                        <p
+                            id="notification-status"
+                            class="admin-status admin-notice"
+                            aria-live="polite"
+                        ></p>
+                    </section>
+                </section>
+
+                <section id="editor-locked" class="admin-card">
+                    <h2 class="admin-heading">Manage Blog Posts</h2>
+
+                    <p class="admin-status">
+                        Sign in with your administrator account to manage blog posts
+                        and site notifications.
+                    </p>
+
+                    <p class="admin-muted">
+                        The editor becomes available after Firebase Authentication
+                        confirms your administrator account.
+                    </p>
+                </section>
+            </section>
+
+            <!-- RIGHT COLUMN: FUNCTIONS AND RESERVED LOWER AREA -->
+            <aside class="admin-column admin-column-right">
+                <section class="admin-card admin-function-card">
+                    <h2 class="admin-heading">Admin Functions</h2>
+
+                    <div class="admin-field">
+                        <label for="admin-function">Selected Function</label>
+                        <select id="admin-function">
+                            <option value="posts" selected>Manage Blog Posts</option>
+                            <option value="notification">Manage Site Notification</option>
+                        </select>
+                    </div>
+
+                    <p
+                        id="admin-function-description"
+                        class="admin-muted"
+                        aria-live="polite"
+                    >
+                        Create, edit, publish, and manage your blog posts.
+                    </p>
+                </section>
+
+                <!-- This lower-right area remains in the layout.
+                     It is empty while the notification editor is selected. -->
+                <section
+                    id="existing-posts-section"
+                    class="admin-card admin-posts-card"
+                >
+                    <div id="existing-posts-content">
+                        <h2 class="admin-heading">Manage Blog Posts</h2>
+
+                        <p class="admin-post-count">
+                            Existing posts and publication status.
+                        </p>
+
+                        <div id="admin-post-list" class="admin-post-list">
+                            <p class="admin-empty">
+                                Sign in to load your existing blog posts.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="/assets/js/admin.js"></script>
+    <script type="module" src="/assets/js/notification-admin.js"></script>
+
+    <!-- Account information and Firebase connection status -->
+    <script type="module">
+        import {
+            auth,
+            db,
+            authPersistence
+        } from "/assets/js/firebase-config.js";
+
+        import {
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        import {
+            collection,
+            getDocs,
+            query,
+            limit
+        } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+        (() => {
+            "use strict";
+
+            const ADMIN_UID = "nJepqTOIsFUCyiNl4aGj4PRzZyJ3";
+            const $ = (id) => document.getElementById(id);
+
+            const elements = {
+                loginForm: $("login-form"),
+                loginStatus: $("login-status"),
+                dashboard: $("admin-dashboard"),
+                editorLocked: $("editor-locked"),
+                accountInformation: $("account-information"),
+                accountEmail: $("account-email"),
+                accountAuthStatus: $("account-auth-status"),
+                accountAdminStatus: $("account-admin-status"),
+                apiStatus: $("api-status"),
+                firestoreStatus: $("firestore-status"),
+                apiLastCheck: $("api-last-check"),
+                apiMessage: $("api-message"),
+                checkApi: $("check-api"),
+                adminFunction: $("admin-function"),
+                functionDescription: $("admin-function-description"),
+                blogEditor: $("blog-editor-panel"),
+                notificationManager: $("notification-manager"),
+                existingPosts: $("existing-posts-section"),
+                existingPostsContent: $("existing-posts-content")
+            };
+
+            let currentUser = null;
+            let apiCheckInProgress = false;
+
+            function setIndicator(element, text, state) {
+                if (!element) return;
+
+                element.textContent = text;
+                element.classList.remove("online", "offline", "pending");
+
+                if (state) {
+                    element.classList.add(state);
+                }
+            }
+
+            function updateLastCheck() {
+                elements.apiLastCheck.textContent = new Date().toLocaleString([], {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    second: "2-digit"
+                });
+            }
+
+            function setConnectionPending() {
+                setIndicator(elements.apiStatus, "Checking...", "pending");
+                setIndicator(elements.firestoreStatus, "Checking...", "pending");
+                elements.apiMessage.textContent = "Testing the Firebase connection.";
+            }
+
+            function showSignedInAccount(user) {
+                if (!user) {
+                    elements.accountInformation.hidden = true;
+                    setIndicator(elements.accountAuthStatus, "Signed out", "offline");
+                    setIndicator(elements.accountAdminStatus, "Not verified", "pending");
+                    return;
+                }
+
+                elements.accountInformation.hidden = false;
+                elements.accountEmail.textContent = user.email || "Email unavailable";
+
+                setIndicator(elements.accountAuthStatus, "Authenticated", "online");
+
+                const isAdmin = user.uid === ADMIN_UID;
+
+                setIndicator(
+                    elements.accountAdminStatus,
+                    isAdmin ? "Administrator" : "Not authorized",
+                    isAdmin ? "online" : "offline"
+                );
+            }
+
+            function updateSelectedFunction() {
+                const selected = elements.adminFunction.value;
+                const showNotification = selected === "notification";
+
+                elements.blogEditor.hidden = showNotification;
+                elements.notificationManager.hidden = !showNotification;
+
+                if (showNotification) {
+                    elements.functionDescription.textContent =
+                        "Edit the site-wide notification banner in the center panel.";
+
+                    // Keep the lower-right section and its space, but empty its contents.
+                    elements.existingPostsContent.hidden = true;
+                } else {
+                    elements.functionDescription.textContent =
+                        "Create, edit, publish, and manage your blog posts.";
+
+                    elements.existingPostsContent.hidden = false;
+                }
+            }
+
+            elements.adminFunction.addEventListener("change", updateSelectedFunction);
+            updateSelectedFunction();
+
+            async function checkFirebaseConnection() {
+                if (apiCheckInProgress) return;
+
+                if (!currentUser) {
+                    setIndicator(elements.apiStatus, "Sign in required", "pending");
+                    setIndicator(elements.firestoreStatus, "Sign in required", "pending");
+                    return;
+                }
+
+                if (currentUser.uid !== ADMIN_UID) {
+                    setIndicator(elements.apiStatus, "Unauthorized", "offline");
+                    setIndicator(elements.firestoreStatus, "Unauthorized", "offline");
+                    elements.apiMessage.textContent =
+                        "The current account is not authorized to access the admin panel.";
+                    return;
+                }
+
+                apiCheckInProgress = true;
+                elements.checkApi.disabled = true;
+                setConnectionPending();
+
+                try {
+                    await getDocs(query(collection(db, "posts"), limit(1)));
+
+                    setIndicator(elements.apiStatus, "Connected", "online");
+                    setIndicator(elements.firestoreStatus, "Connected", "online");
+
+                    elements.apiMessage.textContent =
+                        "Firebase and Firestore are responding successfully.";
+                } catch (error) {
+                    console.error("[Admin] Firebase connection check failed:", error);
+
+                    setIndicator(elements.apiStatus, "Request failed", "offline");
+                    setIndicator(elements.firestoreStatus, "Request failed", "offline");
+
+                    elements.apiMessage.textContent =
+                        error.code === "permission-denied" ||
+                        error.code === "firestore/permission-denied"
+                            ? "Firestore denied the request. Check your Firestore security rules."
+                            : "The connection check failed. Check the browser console for details.";
+                } finally {
+                    updateLastCheck();
+                    apiCheckInProgress = false;
+                    elements.checkApi.disabled = false;
+                }
+            }
+
+            elements.checkApi.addEventListener("click", checkFirebaseConnection);
+
+            Promise.resolve(authPersistence)
+                .catch((error) => {
+                    console.error("[Admin] Authentication persistence failed:", error);
+                })
+                .finally(() => {
+                    onAuthStateChanged(auth, async (user) => {
+                        currentUser = user;
+                        showSignedInAccount(user);
+
+                        if (!user) {
+                            elements.loginForm.hidden = false;
+                            elements.dashboard.hidden = true;
+                            elements.editorLocked.hidden = false;
+
+                            elements.loginStatus.textContent =
+                                "Sign in to manage blog posts and site notifications.";
+
+                            setIndicator(elements.apiStatus, "Sign in required", "pending");
+                            setIndicator(elements.firestoreStatus, "Sign in required", "pending");
+                            return;
+                        }
+
+                        if (user.uid !== ADMIN_UID) {
+                            elements.loginForm.hidden = false;
+                            elements.dashboard.hidden = true;
+                            elements.editorLocked.hidden = false;
+
+                            elements.loginStatus.textContent =
+                                "This account is not authorized to administer the site.";
+
+                            return;
+                        }
+
+                        elements.loginForm.hidden = true;
+                        elements.dashboard.hidden = false;
+                        elements.editorLocked.hidden = true;
+
+                        elements.loginStatus.textContent =
+                            "Administrator authenticated.";
+
+                        await checkFirebaseConnection();
+                        updateSelectedFunction();
+                    });
+                });
+        })();
+    </script>
+</body>
+</html>

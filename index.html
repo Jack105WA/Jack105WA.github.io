@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="https://jack105wa.neocities.org/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jack105WA">
+    <meta property="og:description" content="jack105wa's personal site">
+    <meta property="og:image" content="https://jack105wa.neocities.org/assets/favicon.png">
+    <meta name="theme-color" content="#9900ff">
+    <title>Jack105WA</title>
+
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/gd.css">
+</head>
+
+<body>
+    <div id="everything" class="levelBG">
+<script type="module" src="/assets/js/notification.js"></script>
+        <header class="site-header">
+            <a class="site-logo" aria-label="Jack105WA Home">
+                <h1>Jack105WA</h1>
+            </a>
+        </header>
+
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a class="gdButton nav-button blue-button" href="/">
+                <span>Home</span>
+            </a>
+
+            <a class="gdButton nav-button green-button" href="/blog">
+                <span>Blog</span>
+            </a>
+        </nav>
+
+        <main class="page-content">
+            <section class="brownBox welcome-panel">
+
+                <img
+                    class="comment-image"
+                    src="/assets/comment.png"
+                    alt="Welcome to my site! Check out my socials and read my blog!"
+                >
+
+                <div class="inner-panel">
+                    <h3>My Socials</h3>
+                    <p>Some of my socials</p>
+
+                    <div class="featured-links">
+                        <a
+                            class="gdButton nav-button red-button"
+                            href="https://www.youtube.com/@Jack105WA"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>
+                                <img
+                                    src="/assets/emojis/gj_ytIcon_001.png"
+                                    class="emoji"
+                                    alt=""
+                                >
+                                YouTube
+                            </span>
+                        </a>
+
+                        <a
+                            class="gdButton nav-button purple-button"
+                            href="https://www.twitch.tv/jack105wa"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>
+                                <img
+                                    src="/assets/emojis/gj_twitchIcon_001.png"
+                                    class="emoji"
+                                    alt=""
+                                >
+                                Twitch
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="inner-panel">
+                    <h3>My Game</h3>
+
+                    <div class="game-container">
+                        <a
+                            class="game-video"
+                            href="https://www.youtube.com/watch?v=_fm1EsfbWGo"
+                            aria-label="Play Jack's Ragdoll Playground video"
+                            onclick="event.preventDefault(); playGameVideo(this);"
+                        >
+                            <img
+                                src="https://i.ytimg.com/vi/_fm1EsfbWGo/maxresdefault.jpg"
+                                alt="Jack's Ragdoll Playground video thumbnail"
+                                onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/_fm1EsfbWGo/hqdefault.jpg';"
+                            >
+
+                            <svg viewBox="0 0 68 68" aria-hidden="true">
+                                <path d="M20 12 L56 34 L20 56 Z" fill="#fff"/>
+                            </svg>
+                        </a>
+
+                        <a
+                            class="gdButton nav-button green-button game-play-button"
+                            href="https://www.roblox.com/games/137292955748302"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>Play</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="site-info-row">
+                    <div class="last-updated" aria-label="Last website update">
+                        <span>Last updated: <strong id="nc-last_updated">...</strong></span>
+                    </div>
+
+                    <div class="site-stats" aria-label="Website statistics">
+                        <span>Views: <strong id="nc-views">...</strong></span>
+                        <span>Hits: <strong id="nc-hits">...</strong></span>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>
+                Jack105WA
+                <span class="footer-divider">|</span>
+                <a
+                    href="https://github.com/yoann256/GDBrowser-Maintained"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >GDBrowser-Assets</a>
+
+                <span class="footer-divider">|</span>
+
+                <a
+                    href="https://www.robtopgames.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >RobtopGames</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        function playGameVideo(element) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "game-video";
+
+            const iframe = document.createElement("iframe");
+            iframe.src =
+                "https://www.youtube-nocookie.com/embed/_fm1EsfbWGo?autoplay=1";
+            iframe.title = "Jack's Ragdoll Playground video";
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            iframe.allowFullscreen = true;
+
+            wrapper.appendChild(iframe);
+            element.replaceWith(wrapper);
+        }
+    </script>
+
+    <script src="/assets/js/statget.js"></script>
+</body>
