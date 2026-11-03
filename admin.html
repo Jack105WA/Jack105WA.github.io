@@ -121,16 +121,31 @@
             gap: 13px;
         }
 
-        /* Keep the blog-post editor readable without changing its Pusab heading. */
-        #blog-editor-panel > :not(.admin-editor-header),
-        #blog-editor-panel > :not(.admin-editor-header) * {
+        /* Use Arial for the middle editor content, while keeping headings in Pusab. */
+        #blog-editor-panel,
+        #blog-editor-panel form,
+        #blog-editor-panel form *,
+        #notification-manager,
+        #notification-manager > :not(.admin-editor-header),
+        #notification-manager > :not(.admin-editor-header) * {
             font-family: Arial, sans-serif !important;
         }
 
-        /* The site notification editor and preview retain Pusab. */
-        #notification-manager,
-        #notification-manager * {
+        #blog-editor-panel .admin-editor-header,
+        #blog-editor-panel .admin-editor-header *,
+        #notification-manager .admin-editor-header,
+        #notification-manager .admin-editor-header *,
+        #notification-preview {
             font-family: "Pusab", sans-serif !important;
+        }
+
+        /* Keep the function selector in a standard readable font. */
+        #admin-function {
+            font-family: Arial, sans-serif !important;
+        }
+
+        #admin-function option {
+            font-family: Arial, sans-serif !important;
         }
 
         .admin-field {
