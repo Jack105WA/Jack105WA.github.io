@@ -1,0 +1,56 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid == "nJepqTOIsFUCyiNl4aGj4PRzZyJ3";
+    }
+
+    // Blog posts
+    match /posts/{postId} {
+      // Published posts are public.
+      // Only the administrator can read drafts.
+      allow read: if isAdmin()
+        || resource.data.published == true;
+
+      // Only the administrator can manage posts.
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Site-wide notification banner
+    match /siteSettings/notification {
+      // Public pages can retrieve the notification settings.
+      allow read: if true;
+
+      // Only the administrator can create, edit, or delete them.
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Public page-hit counter
+    match /siteStats/counters {
+      // The website can read the current hit count.
+      allow get: if true;
+      allow list: if false;
+
+      // Create this document manually in the Firebase console.
+      // Public clients cannot create or delete the counter.
+      allow create, delete: if false;
+
+      // Each successful request can increase hits by exactly one.
+      // No other fields or counter modifications are permitted.
+      allow update: if
+        resource.data.keys().hasOnly(['hits'])
+        && request.resource.data.keys().hasOnly(['hits'])
+        && resource.data.hits is int
+        && request.resource.data.hits is int
+        && request.resource.data.hits == resource.data.hits + 1;
+    }
+
+    // Deny access to all other documents by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
