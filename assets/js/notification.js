@@ -68,7 +68,6 @@ import {
             flex-shrink: 0;
         }
 
-        #${NOTIFICATION_ID} a:focus-visible,
         #${NOTIFICATION_ID} a:focus-visible {
             outline: 3px solid #fff;
             outline-offset: 3px;
@@ -83,7 +82,7 @@ import {
             }
 
             #${NOTIFICATION_ID} .notification-content {
-                text-align: left;
+                text-align: center;
             }
         }
     `;
