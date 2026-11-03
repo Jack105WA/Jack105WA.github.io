@@ -16,6 +16,12 @@
     <link rel="stylesheet" href="/assets/css/gd.css">
 
     <style>
+        @font-face {
+            font-family: "Pusab";
+            src: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/Pusab.ttf") format("truetype");
+            font-display: swap;
+        }
+
         :root {
             --admin-blue: #0065FD;
             --admin-brown: #96512F;
@@ -25,6 +31,14 @@
 
         * {
             box-sizing: border-box;
+            font-family: "Pusab", sans-serif !important;
+        }
+
+        input,
+        textarea,
+        select,
+        button {
+            font-family: "Pusab", sans-serif !important;
         }
 
         [hidden] {
@@ -273,9 +287,45 @@
             overflow-wrap: anywhere;
         }
 
+        .admin-posts-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #existing-posts-content {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            flex: 1;
+        }
+
         .admin-post-list {
             display: grid;
             gap: 10px;
+            min-height: 0;
+            max-height: min(52vh, 520px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 2px 7px 2px 0;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            scrollbar-color: var(--admin-yellow) var(--admin-border);
+        }
+
+        .admin-post-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .admin-post-list::-webkit-scrollbar-track {
+            background: var(--admin-border);
+            border-radius: 8px;
+        }
+
+        .admin-post-list::-webkit-scrollbar-thumb {
+            background: var(--admin-yellow);
+            border: 2px solid var(--admin-border);
+            border-radius: 8px;
         }
 
         .admin-post-item {
