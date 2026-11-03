@@ -1016,3 +1016,31 @@ html, body {
     .site-header { margin-bottom: 9px; }
     .site-logo h1 { font-size: 34px; }
 }
+
+
+/* Final alignment fixes: keep page and section headings centered. */
+.site-header,
+.site-logo,
+.site-logo h1,
+.section-heading,
+.section-heading h2,
+.inner-panel h3,
+.sidebar-heading {
+    text-align: center !important;
+}
+.site-header {
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.site-logo {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.sidebar-panel > #jack105wa-site-notification {
+    flex: 0 0 auto;
+    align-self: stretch;
+    width: 100%;
+}
