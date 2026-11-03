@@ -121,6 +121,18 @@
             gap: 13px;
         }
 
+        /* Keep the blog-post editor readable without changing its Pusab heading. */
+        #blog-editor-panel > :not(.admin-editor-header),
+        #blog-editor-panel > :not(.admin-editor-header) * {
+            font-family: Arial, sans-serif !important;
+        }
+
+        /* The site notification editor and preview retain Pusab. */
+        #notification-manager,
+        #notification-manager * {
+            font-family: "Pusab", sans-serif !important;
+        }
+
         .admin-field {
             display: grid;
             gap: 6px;
