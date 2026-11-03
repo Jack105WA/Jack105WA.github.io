@@ -172,18 +172,21 @@ import {
         banner.append(content, close);
 
         const mount = () => {
-            if (!banner.isConnected) {
-                const pageRoot = document.getElementById("everything");
-                (pageRoot || document.body).prepend(banner);
+            const pageRoot = document.getElementById("everything");
+
+            if (pageRoot && !pageRoot.contains(banner)) {
+                pageRoot.prepend(banner);
+            } else if (!pageRoot && document.body && !banner.isConnected) {
+                document.body.prepend(banner);
             }
 
             render();
         };
 
-        if (document.body) {
-            mount();
-        } else {
+        if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", mount, { once: true });
+        } else {
+            mount();
         }
 
         return banner;
