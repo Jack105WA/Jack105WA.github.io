@@ -1044,3 +1044,14 @@ html, body {
     align-self: stretch;
     width: 100%;
 }
+
+
+/* Final notification and social subtitle alignment. */
+#jack105wa-site-notification {
+    border-radius: 16px !important;
+    padding: 13px 16px !important;
+    margin: 0 0 12px !important;
+}
+.inner-panel > p {
+    text-align: center !important;
+}
