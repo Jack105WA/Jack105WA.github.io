@@ -178,7 +178,12 @@ import {
             const sidebar = document.querySelector(".sidebar-panel");
 
             if (sidebar && !sidebar.contains(banner)) {
-                sidebar.prepend(banner);
+                const navigation = sidebar.querySelector(".sidebar-navigation");
+                if (navigation) {
+                    navigation.insertAdjacentElement("afterend", banner);
+                } else {
+                    sidebar.appendChild(banner);
+                }
             } else if (!sidebar && document.body && !banner.isConnected) {
                 document.body.prepend(banner);
             }
