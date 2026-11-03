@@ -11,7 +11,7 @@ import {
 (() => {
     "use strict";
 
-    const POSTS_PER_PAGE = 2;
+    const POSTS_PER_PAGE = 3;
 
     const elements = {
         posts: document.getElementById("blog-posts"),
