@@ -26,14 +26,17 @@ import {
             justify-content: center;
             gap: 14px;
             width: 100%;
-            padding: 13px 48px 13px 16px;
+            margin: 0 0 16px;
+            padding: 12px 36px 12px 12px;
+            border-radius: 9px;
             box-sizing: border-box;
             border: 2px solid rgba(0, 0, 0, 0.3);
             background: #0065FD;
             color: #fff;
             font-family: inherit;
-            font-size: 15px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.45;
+            text-align: center;
             overflow-wrap: anywhere;
             z-index: 1000;
         }
@@ -99,10 +102,10 @@ import {
 
         @media (max-width: 600px) {
             #${NOTIFICATION_ID} {
-                align-items: flex-start;
+                align-items: center;
                 flex-direction: column;
                 gap: 7px;
-                padding: 12px 46px 12px 12px;
+                padding: 12px 36px 12px 12px;
             }
 
             #${NOTIFICATION_ID} .notification-content {
@@ -172,11 +175,11 @@ import {
         banner.append(content, close);
 
         const mount = () => {
-            const pageRoot = document.getElementById("everything");
+            const sidebar = document.querySelector(".sidebar-panel");
 
-            if (pageRoot && !pageRoot.contains(banner)) {
-                pageRoot.prepend(banner);
-            } else if (!pageRoot && document.body && !banner.isConnected) {
+            if (sidebar && !sidebar.contains(banner)) {
+                sidebar.prepend(banner);
+            } else if (!sidebar && document.body && !banner.isConnected) {
                 document.body.prepend(banner);
             }
 
