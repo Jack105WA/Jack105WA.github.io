@@ -893,3 +893,126 @@ html, body {
     .site-logo h1 { font-size: 34px; }
     .welcome-panel { padding: 13px; }
 }
+
+
+/* Stable panels: the outer frame stays fixed while its contents scroll. */
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden !important;
+}
+#everything.levelBG {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: 18px 20px;
+    overflow: hidden;
+}
+#jack105wa-site-notification {
+    position: relative !important;
+    flex: 0 0 auto;
+    width: 100%;
+    z-index: 1000;
+}
+.site-header {
+    flex: 0 0 auto;
+    margin: 0 0 14px;
+    text-align: left;
+}
+.site-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 245px;
+    grid-template-areas: "content sidebar";
+    gap: 16px;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+.page-content {
+    grid-area: content;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+}
+.welcome-panel {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.45) rgba(0,0,0,.15);
+}
+.welcome-panel::-webkit-scrollbar { width: 9px; }
+.welcome-panel::-webkit-scrollbar-track { background: rgba(0,0,0,.15); border-radius: 8px; }
+.welcome-panel::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.4);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 8px;
+}
+.site-sidebar {
+    grid-area: sidebar;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+.sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+.sidebar-heading,
+.section-heading,
+.section-heading h2,
+.inner-panel h3 {
+    text-align: left !important;
+}
+.section-heading { margin-bottom: 18px; }
+.inner-panel { text-align: left; }
+.featured-links { justify-content: flex-start; }
+.comment-image {
+    display: block;
+    width: min(100%, 440px);
+    max-width: 440px;
+    height: auto;
+    margin: 0 0 16px;
+    object-fit: contain;
+}
+.site-footer {
+    width: 100%;
+    margin: 18px 0 0;
+}
+@media (max-width: 700px) {
+    #everything.levelBG { padding: 12px; }
+    .site-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-areas: "sidebar" "content";
+        gap: 12px;
+    }
+    .site-sidebar { height: auto; }
+    .sidebar-panel { height: auto; }
+    .sidebar-navigation { flex-direction: row; }
+    .sidebar-stats { margin-top: 10px; }
+}
+@media (max-width: 420px) {
+    #everything.levelBG { padding: 9px; }
+    .site-header { margin-bottom: 9px; }
+    .site-logo h1 { font-size: 34px; }
+}
