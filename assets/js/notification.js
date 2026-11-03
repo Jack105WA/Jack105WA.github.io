@@ -9,12 +9,10 @@ import {
     "use strict";
 
     const NOTIFICATION_ID = "jack105wa-site-notification";
-    const STORAGE_PREFIX = "jack105wa-notification-dismissed-";
     const VALID_TYPES = ["info", "success", "warning", "error"];
 
     let banner = null;
     let latestData = null;
-    let dismissedVersion = "";
 
     const style = document.createElement("style");
 
@@ -27,8 +25,8 @@ import {
             gap: 14px;
             width: 100%;
             margin: 0 0 16px;
-            padding: 12px 36px 12px 12px;
-            border-radius: 9px;
+            padding: 13px 16px;
+            border-radius: 16px;
             box-sizing: border-box;
             border: 2px solid rgba(0, 0, 0, 0.3);
             background: #0065FD;
@@ -70,31 +68,7 @@ import {
             flex-shrink: 0;
         }
 
-        #${NOTIFICATION_ID} .notification-close {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            border: 1px solid rgba(255, 255, 255, 0.65);
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.15);
-            color: #fff;
-            font: inherit;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        #${NOTIFICATION_ID} .notification-close:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        #${NOTIFICATION_ID} .notification-close:focus-visible,
+        #${NOTIFICATION_ID} a:focus-visible,
         #${NOTIFICATION_ID} a:focus-visible {
             outline: 3px solid #fff;
             outline-offset: 3px;
@@ -105,7 +79,7 @@ import {
                 align-items: center;
                 flex-direction: column;
                 gap: 7px;
-                padding: 12px 36px 12px 12px;
+                padding: 12px 16px;
             }
 
             #${NOTIFICATION_ID} .notification-content {
@@ -147,45 +121,18 @@ import {
         const content = document.createElement("div");
         content.className = "notification-content";
 
-        const close = document.createElement("button");
-        close.className = "notification-close";
-        close.type = "button";
-        close.textContent = "×";
-        close.setAttribute("aria-label", "Dismiss notification");
-
-        close.addEventListener("click", () => {
-            if (!latestData) return;
-
-            dismissedVersion = String(
-                latestData.updatedAt?.toMillis?.() || latestData.message
-            );
-
-            try {
-                sessionStorage.setItem(
-                    STORAGE_PREFIX + window.location.pathname,
-                    dismissedVersion
-                );
-            } catch {
-                // Dismissal still applies to this page session in memory.
-            }
-
-            banner.hidden = true;
-        });
-
-        banner.append(content, close);
+        banner.append(content);
 
         const mount = () => {
-            const sidebar = document.querySelector(".sidebar-panel");
+            const footer = document.querySelector(".site-footer");
+            const contentPanel = document.querySelector(".welcome-panel");
 
-            if (sidebar && !sidebar.contains(banner)) {
-                const navigation = sidebar.querySelector(".sidebar-navigation");
-                if (navigation) {
-                    navigation.insertAdjacentElement("afterend", banner);
-                } else {
-                    sidebar.appendChild(banner);
-                }
-            } else if (!sidebar && document.body && !banner.isConnected) {
-                document.body.prepend(banner);
+            if (footer && !footer.parentNode.contains(banner)) {
+                footer.insertAdjacentElement("beforebegin", banner);
+            } else if (!banner.isConnected && contentPanel) {
+                contentPanel.appendChild(banner);
+            } else if (!banner.isConnected && document.body) {
+                document.body.appendChild(banner);
             }
 
             render();
@@ -205,25 +152,6 @@ import {
         const data = latestData;
 
         if (!data || data.enabled !== true || !data.message) {
-            element.hidden = true;
-            return;
-        }
-
-        const version = String(
-            data.updatedAt?.toMillis?.() || data.message
-        );
-
-        let storedDismissal = "";
-
-        try {
-            storedDismissal = sessionStorage.getItem(
-                STORAGE_PREFIX + window.location.pathname
-            ) || "";
-        } catch {
-            // Storage may be unavailable in some browser contexts.
-        }
-
-        if (dismissedVersion === version || storedDismissal === version) {
             element.hidden = true;
             return;
         }
