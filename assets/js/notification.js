@@ -31,7 +31,7 @@ import {
             border: 2px solid rgba(0, 0, 0, 0.3);
             background: #0065FD;
             color: #fff;
-            font-family: inherit;
+            font-family: "Pusab", sans-serif;
             font-size: 13px;
             line-height: 1.45;
             text-align: center;
