@@ -1,61 +1,101 @@
-(async function loadNeocitiesStats() {
-    const views = document.getElementById("nc-views");
-    const hits = document.getElementById("nc-hits");
-    const update = document.getElementById("nc-last_updated");
+import { db } from "./firebase-config.js";
+import {
+    doc,
+    runTransaction,
+    increment
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
-    if (!views || !hits) {
-        console.error("Neocities stats elements not found.");
-        return;
+const hitsElement = document.getElementById("nc-hits");
+const updatedElement = document.getElementById("nc-last_updated");
+
+const STATS_DOCUMENT = doc(db, "siteStats", "counters");
+const GITHUB_COMMITS_API =
+    "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits?per_page=1";
+
+function formatDate(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        throw new Error("GitHub returned an invalid commit date.");
     }
 
-    const apiURL = "https://neocities.org/api/info?sitename=jack105wa";
+    return date.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
+
+async function updateHits() {
+    if (!hitsElement) return;
 
     try {
-        const response = await fetch(
-            "https://proxy.cors.dev/" + apiURL,
-            { credentials: "omit" }
-        );
+        // A transaction reads and increments the counter atomically.
+        // The counter document must already exist in Firestore.
+        const newHits = await runTransaction(db, async (transaction) => {
+            const snapshot = await transaction.get(STATS_DOCUMENT);
+
+            if (!snapshot.exists()) {
+                throw new Error(
+                    'Firestore document "siteStats/counters" does not exist.'
+                );
+            }
+
+            const currentHits = snapshot.data().hits;
+
+            if (!Number.isInteger(currentHits) || currentHits < 0) {
+                throw new Error("The Firestore hits value is not a valid integer.");
+            }
+
+            transaction.update(STATS_DOCUMENT, {
+                hits: increment(1)
+            });
+
+            return currentHits + 1;
+        });
+
+        hitsElement.textContent = newHits.toLocaleString();
+    } catch (error) {
+        console.error("Could not update Firebase hit counter:", error);
+        hitsElement.textContent = "Unavailable";
+    }
+}
+
+async function updateLastUpdated() {
+    if (!updatedElement) return;
+
+    try {
+        const response = await fetch(GITHUB_COMMITS_API, {
+            headers: {
+                Accept: "application/vnd.github+json"
+            },
+            cache: "no-store"
+        });
 
         if (!response.ok) {
-            throw new Error("HTTP " + response.status);
+            throw new Error("GitHub API returned HTTP " + response.status);
         }
 
-        const data = await response.json();
+        const commits = await response.json();
+        const latestCommit = commits[0];
+        const commitDate =
+            latestCommit?.commit?.committer?.date ||
+            latestCommit?.commit?.author?.date;
 
-        if (data.result !== "success" || !data.info) {
-            throw new Error("Neocities API returned an invalid response.");
+        if (!commitDate) {
+            throw new Error("Latest GitHub commit date was not found.");
         }
 
-        views.textContent = Number(data.info.views).toLocaleString();
-        hits.textContent = Number(data.info.hits).toLocaleString();
-
-        if (update) {
-            const lastUpdated = data.info.last_updated;
-
-            if (lastUpdated) {
-                const date = new Date(lastUpdated);
-
-                update.textContent = "Last Updated: " +
-                    date.toLocaleString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true
-                    });
-            } else {
-                update.textContent = "Last Updated: Unavailable";
-            }
-        }
+        updatedElement.textContent = formatDate(commitDate);
     } catch (error) {
-        console.error("Could not load Neocities statistics:", error);
-
-        views.textContent = "Unavailable";
-        hits.textContent = "Unavailable";
-
-        if (update) {
-            update.textContent = "Last Updated: Unavailable";
-        }
+        console.error("Could not load latest GitHub commit date:", error);
+        updatedElement.textContent = "Unavailable";
     }
-})();
+}
+
+// These run independently so a GitHub API issue cannot stop hit counting.
+updateHits();
+updateLastUpdated();
