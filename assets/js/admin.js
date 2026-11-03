@@ -155,7 +155,7 @@ function friendlyError(error) {
         "auth/network-request-failed":
             "Network error. Check your connection.",
         "auth/unauthorized-domain":
-            "Add jack105wa.neocities.org under Firebase Authentication authorized domains.",
+            "Add jack105wa.github.io under Firebase Authentication authorized domains.",
         "auth/operation-not-allowed":
             "Enable Email/Password under Firebase Authentication sign-in methods.",
         "permission-denied":
