@@ -1,25 +1,6 @@
-/* Shared Roblox legacy cursor theme for every page. */
+/* Use the one remaining custom cursor across the entire website. */
 html,
 body,
 body * {
     cursor: url("/assets/roblox-legacy-cursors-2006-2013-cursor.png") 0 0, auto !important;
-}
-
-a,
-button,
-[role="button"],
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
-summary,
-label[for],
-select,
-.page-image-button,
-.admin-image-button {
-    cursor: url("/assets/roblox-legacy-cursors-2006-2013-pointer.png") 6 0, pointer !important;
-}
-
-:disabled,
-[aria-disabled="true"] {
-    cursor: url("/assets/roblox-legacy-cursors-2006-2013-cursor.png") 0 0, not-allowed !important;
 }
