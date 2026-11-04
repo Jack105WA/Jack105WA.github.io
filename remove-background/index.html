@@ -53,14 +53,19 @@
                 </header>
                 <div class="inner-panel">
                     <h3>Background Remover</h3>
-                    <p class="tool-description">Remove an image's background and save the result as a transparent PNG. Processing happens in your browser; your image is not uploaded to a background-removal server.</p>
+                    <p class="tool-description">Create a transparent PNG directly in your browser. Choose Balanced for quicker results or High detail for more careful edges. Your image is never uploaded.</p>
                     <label class="upload-zone" id="uploadZone" for="fileInput">
                         <strong>Choose an image</strong>
                         <span>Click to browse or drag and drop an image here</span>
                         <span>PNG, JPG, or WebP · Maximum 20 MB</span>
                     </label>
                     <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp">
-                    <div class="tool-actions">
+                    <div style="margin-top:16px;text-align:left;font:14px Arial,sans-serif">
+<label for="qualitySelect" style="display:block;margin-bottom:7px">Processing quality</label>
+<select id="qualitySelect" style="width:100%;max-width:360px;padding:10px;border-radius:7px;border:1px solid rgba(255,255,255,.35);background:#352015;color:#fff">
+<option value="isnet_fp16">Balanced — faster, good for most images</option>
+<option value="isnet">High detail — slower, better edge refinement</option>
+</select></div><div class="tool-actions">
                         <button class="gdButton nav-button green-button" id="removeButton" type="button" disabled>Remove Background</button>
                         <a class="gdButton nav-button blue-button" id="downloadButton" download="background-removed.png" hidden>Download PNG</a>
                         <button class="gdButton nav-button orange-button" id="resetButton" type="button" hidden>Choose Another</button>
@@ -86,7 +91,7 @@
                 <nav class="sidebar-navigation" aria-label="Main navigation">
                     <a class="gdButton nav-button blue-button" href="/"><span>Home</span></a>
                     <a class="gdButton nav-button green-button" href="/blog"><span>Blog</span></a>
-                    <a class="gdButton nav-button purple-button" href="/remove-background"><span>Background Remover</span></a>
+                    <a class="gdButton nav-button purple-button" href="/tools"><span>Tools</span></a>
                 </nav>
             </section>
         </aside>
@@ -98,6 +103,7 @@
     const removeButton = document.getElementById("removeButton");
     const downloadButton = document.getElementById("downloadButton");
     const resetButton = document.getElementById("resetButton");
+    const qualitySelect = document.getElementById("qualitySelect");
     const status = document.getElementById("status");
     const previewGrid = document.getElementById("previewGrid");
     const originalPreview = document.getElementById("originalPreview");
@@ -165,22 +171,31 @@
         if (!selectedFile || isProcessing) return;
         isProcessing = true;
         removeButton.disabled = true;
-        setStatus("Loading the background-removal model. The first run may take a little while...");
+        setStatus("Loading the selected model. The first run downloads it; later runs can reuse the browser cache.");
         try {
             const { removeBackground } = await import("https://esm.sh/@imgly/background-removal@1.7.0");
             setStatus("Removing the background… keep this tab open.");
+            const model = qualitySelect.value;
             const resultBlob = await removeBackground(selectedFile, {
-                output: { format: "image/png", quality: 1 }
+                model,
+                output: { format: "image/png", quality: 1 },
+                progress: (key, current, total) => {
+                    if (total > 0) {
+                        setStatus("Preparing model: " + Math.round((current / total) * 100) + "%");
+                    } else {
+                        setStatus("Preparing model…");
+                    }
+                }
             });
             clearResult();
             resultUrl = URL.createObjectURL(resultBlob);
             resultPreview.src = resultUrl;
             downloadButton.href = resultUrl;
             downloadButton.hidden = false;
-            setStatus("Done. The background is transparent. Download the PNG to save it.");
+            setStatus("Done. Review the edges, then download the transparent PNG. High detail takes longer.");
         } catch (error) {
             console.error("Background removal failed:", error);
-            setStatus("Could not remove the background. Check your internet connection and try again.");
+            setStatus("Could not remove the background. Check your connection, then retry. The first model download can be large.");
         } finally {
             isProcessing = false;
             removeButton.disabled = !selectedFile;
