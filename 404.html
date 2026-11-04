@@ -24,7 +24,7 @@
             "/admin": "/admin.html"
         };
 
-        const target = routes[window.location.pathname.replace(/\\/+$/, "")];
+        const target = routes[window.location.pathname.replace(/\/+$/, "")];
         if (!target) return;
 
         fetch(target)
