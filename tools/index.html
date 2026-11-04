@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#9900ff"><meta name="description" content="Small browser-based tools by Jack105WA.">
+<title>Tools | Jack105WA</title>
+<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/assets/css/gd.css"><link rel="stylesheet" href="/assets/css/cursors.css">
+<style>
+html,body{height:auto;min-height:100%;overflow:auto!important}
+#everything.levelBG{height:auto;min-height:100vh;overflow:visible}
+.site-layout{min-height:calc(100vh - 36px);overflow:visible}
+.page-content,.welcome-panel{height:auto;min-height:0;overflow:visible}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:15px;margin-top:16px}
+.tool-card{display:flex;flex-direction:column;align-items:flex-start;min-height:190px;padding:18px;border:2px solid rgba(0,0,0,.35);border-radius:10px;background:rgba(0,0,0,.2);text-align:left}
+.tool-card h3{margin:0 0 10px;color:#ffd21c;font:22px Pusab,sans-serif;text-shadow:2px 2px #000}
+.tool-card p{margin:0 0 18px;font:14px/1.6 Arial,sans-serif}
+.tool-card .nav-button{width:100%;margin-top:auto}
+@media(max-width:700px){#everything.levelBG{padding:10px}.site-layout{display:flex;flex-direction:column;gap:12px}.site-sidebar{order:-1;height:auto}.sidebar-panel{height:auto}.sidebar-stats{margin-top:16px}}
+</style></head>
+<body><div id="everything" class="levelBG">
+<script type="module" src="/assets/js/notification.js?v=6"></script>
+<div class="site-layout"><main class="page-content"><section class="brownBox welcome-panel">
+<header class="site-header"><a class="site-logo" href="/" aria-label="Jack105WA Home"><h1>Jack105WA</h1></a></header>
+<div class="inner-panel"><h3>Tools</h3><p>Small utilities that run in your browser.</p>
+<div class="tools-grid"><article class="tool-card"><h3>Background Remover</h3>
+<p>Remove an image background and export a transparent PNG. Includes balanced and high-detail processing modes.</p>
+<a class="gdButton nav-button green-button" href="/remove-background"><span>Open Tool</span></a>
+</article></div></div><footer class="site-footer"><p><a href="/">Back to Home</a></p></footer>
+</section></main><aside class="site-sidebar" aria-label="Site navigation"><section class="brownBox sidebar-panel">
+<h2 class="sidebar-heading">Navigation</h2><nav class="sidebar-navigation" aria-label="Main navigation">
+<a class="gdButton nav-button blue-button" href="/"><span>Home</span></a>
+<a class="gdButton nav-button green-button" href="/blog"><span>Blog</span></a>
+<a class="gdButton nav-button purple-button" href="/tools"><span>Tools</span></a>
+</nav></section></aside></div></div></body></html>
