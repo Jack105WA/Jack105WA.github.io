@@ -231,7 +231,7 @@
                         const match = lastLink.match(/[?&]page=(\d+)/);
                         if (match) totalPages = Number(match[1]);
                     } else if (!/rel="next"/.test(linkHeader)) {
-                        totalPages = page;
+                        totalPages = commits.length === 0 ? Math.max(1, page - 1) : page;
                     }
 
                     pageCache.set(page, commits);
