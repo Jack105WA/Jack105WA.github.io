@@ -169,7 +169,7 @@
                     url.searchParams.set("per_page", "100");
                     url.searchParams.set("page", "1");
 
-                    // GitHub returns only this page's three commits, not the full history.
+                    // Fetch one batch and paginate locally so the UI does not depend on exposed Link headers.
                     let commits;
                     try {
                         const response = await fetch(url, {
