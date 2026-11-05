@@ -1,3 +1,4 @@
+import "./button-sound.js";
 import { auth, db, authPersistence } from "./firebase-config.js";
 
 import {
