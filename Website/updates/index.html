@@ -21,7 +21,7 @@
         .update-entry a{color:#ffe06b;font:14px "Pusab",Arial,sans-serif;text-decoration:none}
         .update-entry a:hover{text-decoration:underline}
         .updates-status{margin:15px 0;color:#fff;font:16px/1.6 "Pusab",sans-serif;text-align:center;overflow-wrap:anywhere}
-        .updates-pagination{position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;width:100%;margin:24px 0 5px;min-height:52px}.updates-page-numbers{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}.updates-page-number{min-width:34px;height:34px;padding:0 7px;border:2px solid rgba(255,255,255,.35);border-radius:6px;background:rgba(0,0,0,.25);color:#fff;font:15px "Pusab",Arial,sans-serif;cursor:pointer}.updates-page-number[aria-current="page"]{border-color:var(--gold,#ffc800);background:var(--gold,#ffc800);color:#241300;text-shadow:none}.updates-page-number:focus-visible{outline:3px solid #fff;outline-offset:3px}.updates-page-ellipsis{color:#fff;font:16px Arial,sans-serif}
+        .updates-pagination{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;width:100%;margin:24px 0 5px;min-height:52px}.updates-pagination-controls{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;width:100%}.updates-page-numbers{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}.updates-page-number{min-width:34px;height:34px;padding:0 7px;border:2px solid rgba(255,255,255,.35);border-radius:6px;background:rgba(0,0,0,.25);color:#fff;font:15px "Pusab",Arial,sans-serif;cursor:pointer}.updates-page-number[aria-current="page"]{border-color:var(--gold,#ffc800);background:var(--gold,#ffc800);color:#241300;text-shadow:none}.updates-page-number:focus-visible{outline:3px solid #fff;outline-offset:3px}.updates-page-ellipsis{color:#fff;font:16px Arial,sans-serif}
         .updates-page-info{margin:0;color:#fff;font:22px "Pusab",sans-serif;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 #000}
         .updates-pagination .page-image-button{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;padding:0;border:0;background:transparent;cursor:pointer;flex-shrink:0;transition:transform 100ms ease}
         .updates-pagination .page-image-button img{display:block;width:100%;height:100%;object-fit:contain}
@@ -46,9 +46,11 @@
                         <p class="updates-status">Loading updates from GitHub...</p>
                     </div>
                     <nav id="updates-pagination" class="updates-pagination" aria-label="Updates pages" hidden>
-                        <button id="updates-previous" class="page-image-button" type="button" aria-label="Previous page" title="Previous page" disabled><img src="/assets/emojis/GJ_undoBtn_001.png" alt=""></button>
-                        <div id="updates-page-numbers" class="updates-page-numbers" aria-label="Choose updates page"></div>
-                        <button id="updates-next" class="page-image-button" type="button" aria-label="Next page" title="Next page" disabled><img src="/assets/emojis/GJ_redoBtn_001.png" alt=""></button>
+                        <div class="updates-pagination-controls">
+                            <button id="updates-previous" class="page-image-button" type="button" aria-label="Previous page" title="Previous page" disabled><img src="/assets/emojis/GJ_undoBtn_001.png" alt=""></button>
+                            <div id="updates-page-numbers" class="updates-page-numbers" aria-label="Choose updates page"></div>
+                            <button id="updates-next" class="page-image-button" type="button" aria-label="Next page" title="Next page" disabled><img src="/assets/emojis/GJ_redoBtn_001.png" alt=""></button>
+                        </div>
                         <p id="updates-page-info" class="updates-page-info" aria-live="polite">Page 1</p>
                     </nav>
                 </section>
@@ -146,31 +148,27 @@
             function renderPagination() {
                 pageNumbers.replaceChildren();
                 const knownTotal = totalPages;
-                const first = Math.max(1, Math.min(
-                    currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2),
-                    knownTotal ? knownTotal - VISIBLE_PAGE_COUNT + 1 : currentPage
-                ));
+                const first = knownTotal
+                    ? Math.max(1, Math.min(
+                        currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2),
+                        Math.max(1, knownTotal - VISIBLE_PAGE_COUNT + 1)
+                    ))
+                    : Math.max(1, currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2));
                 const last = knownTotal
                     ? Math.min(knownTotal, first + VISIBLE_PAGE_COUNT - 1)
                     : first + VISIBLE_PAGE_COUNT - 1;
-
-                if (first > 1) {
-                    const firstButton = makePageButton(1);
-                    pageNumbers.append(firstButton, element("span", "updates-page-ellipsis", "…"));
-                }
 
                 for (let page = first; page <= last; page++) {
                     pageNumbers.appendChild(makePageButton(page));
                 }
 
-                if (knownTotal && last < knownTotal) {
-                    pageNumbers.append(element("span", "updates-page-ellipsis", "…"), makePageButton(knownTotal));
-                }
-
                 previous.disabled = currentPage <= 1;
-                next.disabled = knownTotal !== null && currentPage >= knownTotal;
-                next.disabled = knownTotal === null && pageCache.has(currentPage) && pageCache.get(currentPage).length < PER_PAGE;
-                pageInfo.textContent = knownTotal ? "Page " + currentPage + " of " + knownTotal : "Page " + currentPage;
+                next.disabled = knownTotal !== null
+                    ? currentPage >= knownTotal
+                    : pageCache.has(currentPage) && pageCache.get(currentPage).length < PER_PAGE;
+                pageInfo.textContent = knownTotal
+                    ? "Current page: " + currentPage + " of " + knownTotal
+                    : "Current page: " + currentPage;
                 pagination.hidden = false;
             }
 
