@@ -1010,12 +1010,21 @@ html[data-theme="dark"] .sidebar-panel {
     color: #f1eaff;
     box-shadow: 0 7px 0 rgba(0, 0, 0, .45);
 }
+
+/* Rebuild the main panel border on the exact outer box dimensions.
+   The original border-image has square pixel-art corners, so do not round it. */
+html[data-theme="dark"] .welcome-panel {
+    border: 0;
+    border-radius: 0;
+    padding: 25px;
+}
 html[data-theme="dark"] .welcome-panel::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
     border: 5px solid transparent;
+    border-radius: 0;
     border-image: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png") 10% round;
     filter: hue-rotate(235deg) saturate(.75) brightness(.72);
     pointer-events: none;
