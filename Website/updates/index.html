@@ -11,10 +11,20 @@
     <link rel="stylesheet" href="/assets/css/cursors.css">
     <script src="/assets/js/dark-mode.js" defer></script>
     <style>
-        html, body { height: auto; min-height: 100%; overflow: auto !important; }
-        #everything.levelBG { min-height: 100vh; height: auto; overflow: visible; }
-        .site-layout { min-height: calc(100vh - 36px); overflow: visible; }
-        .page-content, .welcome-panel { height: auto; min-height: 0; overflow: visible; }
+        /* Use the shared fixed-height layout so the updates panel scrolls internally. */
+        @media (max-width: 700px) {
+            #everything.levelBG { padding: 10px; }
+            .site-layout {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: auto minmax(0, 1fr);
+                grid-template-areas: "sidebar" "content";
+                gap: 12px;
+            }
+            .site-sidebar, .sidebar-panel { height: auto; }
+            .page-content { height: auto; }
+            .welcome-panel { height: 100%; min-height: 0; }
+        }
         .updates-intro {
             margin: 0 0 18px;
             color: #fff;
