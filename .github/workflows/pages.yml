@@ -24,12 +24,49 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Generate latest commit metadata
+      - name: Generate latest commit metadata and changelog fallback
         run: |
-          COMMIT_DATE="$(git log -1 --format=%cI)"
-          COMMIT_SHA="$(git rev-parse HEAD)"
-          printf '{"commitDate":"%s","commit":"%s"}\n' "$COMMIT_DATE" "$COMMIT_SHA" > Website/last-updated.json
+          python3 <<'PY'
+          import datetime
+          import json
+          import subprocess
+
+          latest_date = subprocess.check_output(
+              ["git", "log", "-1", "--format=%cI"], text=True
+          ).strip()
+          latest_sha = subprocess.check_output(
+              ["git", "rev-parse", "HEAD"], text=True
+          ).strip()
+          with open("Website/last-updated.json", "w", encoding="utf-8") as file:
+              json.dump({"commitDate": latest_date, "commit": latest_sha}, file)
+
+          rows = subprocess.check_output(
+              ["git", "log", "-100", "--format=%H%x1f%aI%x1f%an%x1f%s"],
+              text=True
+          ).splitlines()
+          commits = []
+          for row in rows:
+              parts = row.split("\x1f", 3)
+              if len(parts) != 4:
+                  continue
+              sha, date, author, subject = parts
+              commits.append({
+                  "sha": sha,
+                  "html_url": f"https://github.com/Jack105WA/Jack105WA.github.io/commit/{sha}",
+                  "commit": {
+                      "author": {"name": author, "date": date},
+                      "committer": {"name": author, "date": date},
+                      "message": subject
+                  }
+              })
+
+          with open("Website/updates/changelog-fallback.json", "w", encoding="utf-8") as file:
+              json.dump(commits, file, ensure_ascii=False, indent=2)
+              file.write("\n")
+          PY
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
