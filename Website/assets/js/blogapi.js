@@ -2,7 +2,6 @@ import { db, authPersistence } from "./firebase-config.js";
 
 import {
     collection,
-    documentId,
     getCountFromServer,
     getDocs,
     limit,
@@ -166,8 +165,7 @@ import {
         return query(
             collection(db, "posts"),
             where("published", "==", true),
-            orderBy("date", "desc"),
-            orderBy(documentId(), "desc")
+            orderBy("date", "desc")
         );
     }
 
@@ -231,7 +229,8 @@ import {
             if (!db) throw new Error("Firestore database is not initialized. Check firebase-config.js.");
 
             // Count metadata only; retrieve the actual post documents one page at a time.
-            const countSnapshot = await getCountFromServer(basePostsQuery());
+            const countQuery = query(collection(db, "posts"), where("published", "==", true));
+            const countSnapshot = await getCountFromServer(countQuery);
             const count = countSnapshot.data().count;
             totalPages = Math.max(1, Math.ceil(count / POSTS_PER_PAGE));
 
