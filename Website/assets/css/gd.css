@@ -1061,3 +1061,25 @@ html[data-theme="dark"] .site-footer { border-color: rgba(255, 255, 255, .12); }
 @media (max-width: 700px) {
     .theme-toggle { flex: 1 1 100%; margin-top: 9px; }
 }
+
+
+/* Keep the theme switch at the bottom of the sidebar, directly above stats. */
+.theme-toggle {
+    margin: auto 0 12px;
+    flex: 0 0 auto;
+}
+.sidebar-stats {
+    margin-top: 0;
+}
+
+/* Match the site's normal top-to-bottom gradient direction. */
+html[data-theme="dark"] #everything.levelBG {
+    background: linear-gradient(#7620b5 0%, #421078 42%, #18002d 100%);
+    background-attachment: fixed;
+}
+@media (max-width: 700px) {
+    .theme-toggle {
+        flex: 0 0 auto;
+        margin: 9px 0 0;
+    }
+}
