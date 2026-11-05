@@ -1,6 +1,6 @@
 import { db, authPersistence } from "./firebase-config.js";
 import {
-    collection, getCountFromServer, getDocs, limit, offset, orderBy, query, where
+    collection, getCountFromServer, getDocs, limit, orderBy, query, startAfter, where
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 (() => {
@@ -16,6 +16,7 @@ import {
     let currentPage = 1;
     let totalPages = 1;
     let requestId = 0;
+    const cursorByPage = new Map([[1, null]]);
 
     function node(tag, className = "", text) {
         const result = document.createElement(tag);
@@ -141,14 +142,46 @@ import {
             totalPages = Math.max(1, Math.ceil(countSnapshot.data().count / PER_PAGE));
             currentPage = Math.min(currentPage, totalPages);
 
+            // Firestore's web SDK has no offset() query constraint. Build page
+            // cursors with startAfter(), fetching only one small page per request.
+            let cursor = cursorByPage.get(currentPage);
+            if (currentPage > 1 && cursor === undefined) {
+                let previousCursor = cursorByPage.get(1);
+                for (let page = 1; page < currentPage; page++) {
+                    if (cursorByPage.has(page + 1)) {
+                        previousCursor = cursorByPage.get(page + 1);
+                        continue;
+                    }
+                    const cursorQuery = query(
+                        postsCollection,
+                        published,
+                        orderBy("date", "desc"),
+                        ...(previousCursor ? [startAfter(previousCursor)] : []),
+                        limit(PER_PAGE)
+                    );
+                    const cursorSnapshot = await getDocs(cursorQuery);
+                    if (request !== requestId) return;
+                    if (cursorSnapshot.empty) {
+                        currentPage = page;
+                        break;
+                    }
+                    previousCursor = cursorSnapshot.docs[cursorSnapshot.docs.length - 1];
+                    cursorByPage.set(page + 1, previousCursor);
+                }
+                cursor = cursorByPage.get(currentPage);
+            }
+
             const pageQuery = query(
                 postsCollection,
                 published,
                 orderBy("date", "desc"),
-                offset((currentPage - 1) * PER_PAGE),
+                ...(cursor ? [startAfter(cursor)] : []),
                 limit(PER_PAGE)
             );
             const snapshot = await getDocs(pageQuery);
+            if (snapshot.docs.length) {
+                cursorByPage.set(currentPage + 1, snapshot.docs[snapshot.docs.length - 1]);
+            }
             if (request !== requestId) return;
 
             el.posts.replaceChildren();
