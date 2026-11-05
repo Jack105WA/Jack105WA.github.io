@@ -7,16 +7,19 @@
 <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="/assets/css/gd.css"><link rel="stylesheet" href="/assets/css/cursors.css">
 <style>
-html,body{height:auto;min-height:100%;overflow:auto!important}
-#everything.levelBG{height:auto;min-height:100vh;overflow:visible}
-.site-layout{min-height:calc(100vh - 36px);overflow:visible}
-.page-content,.welcome-panel{height:auto;min-height:0;overflow:visible}
+/* Keep the main panel within the viewport; its content scrolls inside it. */
+@media(max-width:700px){
+#everything.levelBG{padding:10px}
+.site-layout{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"sidebar" "content";gap:12px}
+.site-sidebar,.sidebar-panel{height:auto}
+.page-content{height:auto}
+.welcome-panel{height:100%;min-height:0}
+}
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:15px;margin-top:16px}
 .tool-card{display:flex;flex-direction:column;align-items:flex-start;min-height:190px;padding:18px;border:2px solid rgba(0,0,0,.35);border-radius:10px;background:rgba(0,0,0,.2);text-align:left}
 .tool-card h3{margin:0 0 10px;color:#ffd21c;font:22px Pusab,sans-serif;text-shadow:2px 2px #000}
 .tool-card p{margin:0 0 18px;font:14px/1.6 Arial,sans-serif}
 .tool-card .nav-button{width:100%;margin-top:auto}
-@media(max-width:700px){#everything.levelBG{padding:10px}.site-layout{display:flex;flex-direction:column;gap:12px}.site-sidebar{order:-1;height:auto}.sidebar-panel{height:auto}.sidebar-stats{margin-top:16px}}
 </style>    <script src="/assets/js/dark-mode.js" defer></script>
 </head>
 <body><div id="everything" class="levelBG">
