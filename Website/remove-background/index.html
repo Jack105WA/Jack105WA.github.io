@@ -10,10 +10,20 @@
     <link rel="stylesheet" href="/assets/css/gd.css">
     <link rel="stylesheet" href="/assets/css/cursors.css">
     <style>
-        html, body { height: auto; min-height: 100%; overflow: auto !important; }
-        #everything.levelBG { min-height: 100vh; height: auto; overflow: visible; }
-        .site-layout { min-height: calc(100vh - 36px); overflow: visible; }
-        .page-content, .welcome-panel { height: auto; min-height: 0; overflow: visible; }
+        /* Keep the main panel within the viewport; its content scrolls inside it. */
+        @media (max-width: 700px) {
+            #everything.levelBG { padding: 10px; }
+            .site-layout {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: auto minmax(0, 1fr);
+                grid-template-areas: "sidebar" "content";
+                gap: 12px;
+            }
+            .site-sidebar, .sidebar-panel { height: auto; }
+            .page-content { height: auto; }
+            .welcome-panel { height: 100%; min-height: 0; }
+        }
         .tool-description { font: 15px/1.6 Arial, sans-serif !important; }
         .upload-zone {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
