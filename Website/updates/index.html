@@ -86,7 +86,9 @@
             let currentPage = 1;
             let totalPages = 1;
             let requestId = 0;
-            const cacheKey = "jack105wa-changelog-v2";
+            let commitsCache = null;
+            // Session-only cache: reuse the fetched commit list while this page stays open.
+            // It is intentionally memory-only and is cleared automatically on refresh.
 
             function element(tag, className, text) {
                 const node = document.createElement(tag);
@@ -169,40 +171,33 @@
                     url.searchParams.set("per_page", "100");
                     url.searchParams.set("page", "1");
 
-                    // Fetch one batch and paginate locally so the UI does not depend on exposed Link headers.
-                    let commits;
-                    try {
-                        const response = await fetch(url, {
-                            cache: "no-store",
-                            headers: { "Accept": "application/vnd.github+json" }
-                        });
-                        if (!response.ok) {
-                            const detail = response.status === 403 || response.status === 429
-                                ? "GitHub API rate limit reached"
-                                : "GitHub returned HTTP " + response.status;
-                            throw new Error(detail);
-                        }
-                        commits = await response.json();
-                        if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
-                        totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
-                        try { localStorage.setItem(cacheKey, JSON.stringify({ commits, totalPages })); } catch {}
-                    } catch (apiError) {
-                        console.warn("Live changelog request failed; trying saved data:", apiError);
-                        let cached = null;
+                    // Fetch the commit list once per page load. All pagination after
+                    // this point uses the in-memory array, never another API request.
+                    let commits = commitsCache;
+                    if (!commits) {
                         try {
-                            const saved = localStorage.getItem(cacheKey);
-                            if (saved) cached = JSON.parse(saved);
-                        } catch {}
-                        if (cached && Array.isArray(cached.commits)) {
-                            commits = cached.commits;
-                        } else {
+                            const response = await fetch(url, {
+                                cache: "no-store",
+                                headers: { "Accept": "application/vnd.github+json" }
+                            });
+                            if (!response.ok) {
+                                const detail = response.status === 403 || response.status === 429
+                                    ? "GitHub API rate limit reached"
+                                    : "GitHub returned HTTP " + response.status;
+                                throw new Error(detail);
+                            }
+                            commits = await response.json();
+                            if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
+                        } catch (apiError) {
+                            console.warn("Live changelog request failed; trying fallback data:", apiError);
                             const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
                             if (!fallbackResponse.ok) throw apiError;
                             commits = await fallbackResponse.json();
                             if (!Array.isArray(commits)) throw apiError;
                         }
-                        totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
+                        commitsCache = commits;
                     }
+                    totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
                     currentPage = Math.min(currentPage, totalPages);
                     commits = commits.slice(
                         (currentPage - 1) * PER_PAGE,
