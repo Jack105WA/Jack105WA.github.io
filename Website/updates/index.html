@@ -82,6 +82,8 @@
             const previous = document.getElementById("updates-previous");
             const next = document.getElementById("updates-next");
             const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits";
+            const cacheKey = "jack105wa-changelog-v1";
+            const fallbackURL = "/updates/changelog-fallback.json";
             let currentPage = 1;
             let totalPages = 1;
             let requestId = 0;
@@ -173,19 +175,46 @@
 
                 try {
                     const url = new URL(endpoint);
+                    url.searchParams.set("sha", "main");
                     url.searchParams.set("per_page", String(PER_PAGE));
                     url.searchParams.set("page", String(currentPage));
 
                     // GitHub returns only this page's three commits, not the full history.
-                    const response = await fetch(url, {
-                        headers: { "Accept": "application/vnd.github+json" }
-                    });
-                    if (!response.ok) throw new Error("GitHub returned HTTP " + response.status);
-                    const commits = await response.json();
+                    let commits;
+                    try {
+                        const response = await fetch(url, {
+                            cache: "no-store",
+                            headers: { "Accept": "application/vnd.github+json" }
+                        });
+                        if (!response.ok) {
+                            const detail = response.status === 403 || response.status === 429
+                                ? "GitHub API rate limit reached"
+                                : "GitHub returned HTTP " + response.status;
+                            throw new Error(detail);
+                        }
+                        commits = await response.json();
+                        if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
+                        try { localStorage.setItem(cacheKey, JSON.stringify(commits)); } catch {}
+                        totalPages = lastPageFromHeader(response.headers.get("Link"), currentPage);
+                    } catch (apiError) {
+                        console.warn("Live changelog request failed; trying saved data:", apiError);
+                        let cached = null;
+                        try {
+                            const saved = localStorage.getItem(cacheKey);
+                            if (saved) cached = JSON.parse(saved);
+                        } catch {}
+                        if (Array.isArray(cached) && cached.length) {
+                            commits = cached;
+                            totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
+                        } else {
+                            const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
+                            if (!fallbackResponse.ok) throw apiError;
+                            commits = await fallbackResponse.json();
+                            if (!Array.isArray(commits)) throw apiError;
+                            totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
+                        }
+                    }
                     if (request !== requestId) return;
-                    if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
-
-                    totalPages = lastPageFromHeader(response.headers.get("Link"), currentPage);
                     if (commits.length === 0 && currentPage > totalPages) {
                         return showPage(totalPages, options);
                     }
@@ -200,7 +229,7 @@
                 } catch (error) {
                     if (request !== requestId) return;
                     console.error("Could not load GitHub updates:", error);
-                    status("Could not load the changelog. Please refresh the page and try again.");
+                    status("Could not load the changelog. " + (error?.message || "Check your connection and try again."));
                 }
             }
 
