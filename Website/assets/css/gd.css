@@ -991,48 +991,48 @@ button:focus-visible {
 }
 
 
-/* Dark mode — preference is stored in the jack105wa-theme cookie */
+/* Dark mode — recolor only; preserve the light-mode layout and geometry. */
 html[data-theme="dark"] {
     color-scheme: dark;
     background: #18002d;
 }
-html[data-theme="dark"] body { background: #18002d; }
+html[data-theme="dark"] body {
+    background: #18002d;
+}
 html[data-theme="dark"] #everything.levelBG {
-    background: linear-gradient(135deg, #7620b5 0%, #421078 42%, #18002d 100%);
+    background: linear-gradient(#7620b5 0%, #421078 42%, #18002d 100%);
     background-attachment: fixed;
 }
+
+/* Keep the original 5px border, border radius, padding, and sizing.
+   The overlay recolors the existing image border without changing its shape. */
 html[data-theme="dark"] .welcome-panel,
 html[data-theme="dark"] .sidebar-panel {
     position: relative;
-    background-color: #17121f;
-    border: 5px solid transparent;
+    border-color: transparent;
     border-image: none;
+    background-color: #17121f;
     color: #f1eaff;
     box-shadow: 0 7px 0 rgba(0, 0, 0, .45);
 }
-
-/* Rebuild the main panel border on the exact outer box dimensions.
-   The original border-image has square pixel-art corners, so do not round it. */
-html[data-theme="dark"] .welcome-panel {
-    border: 0;
-    border-radius: 0;
-    padding: 25px;
-}
-html[data-theme="dark"] .welcome-panel::before {
+html[data-theme="dark"] .welcome-panel::before,
+html[data-theme="dark"] .sidebar-panel::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
     border: 5px solid transparent;
-    border-radius: 0;
+    border-radius: inherit;
     border-image: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png") 10% round;
     filter: hue-rotate(235deg) saturate(.75) brightness(.72);
     pointer-events: none;
 }
-html[data-theme="dark"] .welcome-panel > * {
+html[data-theme="dark"] .welcome-panel > *,
+html[data-theme="dark"] .sidebar-panel > * {
     position: relative;
     z-index: 1;
 }
+
 html[data-theme="dark"] .inner-panel,
 html[data-theme="dark"] .blog-post,
 html[data-theme="dark"] .tool-card,
@@ -1053,9 +1053,13 @@ html[data-theme="dark"] .site-footer a {
     -webkit-text-fill-color: #f0e6ff !important;
 }
 html[data-theme="dark"] .post-meta,
-html[data-theme="dark"] .post-footer { color: #c7b4df; }
+html[data-theme="dark"] .post-footer {
+    color: #c7b4df;
+}
 html[data-theme="dark"] .post-footer strong,
-html[data-theme="dark"] .sidebar-stats strong { color: #fff; }
+html[data-theme="dark"] .sidebar-stats strong {
+    color: #fff;
+}
 html[data-theme="dark"] .upload-zone {
     background: rgba(0, 0, 0, .65);
     border-color: #9b73c2;
@@ -1066,40 +1070,35 @@ html[data-theme="dark"] .upload-zone.dragging {
     background: rgba(0, 0, 0, .85);
     border-color: #ffd21c;
 }
-html[data-theme="dark"] .site-footer { border-color: rgba(255, 255, 255, .12); }
+html[data-theme="dark"] .site-footer {
+    border-color: rgba(255, 255, 255, .12);
+}
 
-/* Theme switch uses the same Geometry Dash button styling as navigation. */
+/* Theme switch keeps the same dimensions and button styling in both themes. */
 .theme-toggle {
     position: static;
     display: inline-flex;
     width: 100%;
     min-width: 0;
     min-height: 44px;
-    margin: 12px 0 0;
+    margin: auto 0 12px;
     padding: 10px 12px;
     cursor: pointer;
-}
-.theme-toggle:hover { filter: brightness(1.15); transform: translateY(-2px); }
-.theme-toggle:active { transform: translateY(2px); }
-.theme-toggle:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-@media (max-width: 700px) {
-    .theme-toggle { flex: 1 1 100%; margin-top: 9px; }
-}
-
-
-/* Keep the theme switch at the bottom of the sidebar, directly above stats. */
-.theme-toggle {
-    margin: auto 0 12px;
     flex: 0 0 auto;
+}
+.theme-toggle:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+.theme-toggle:active {
+    transform: translateY(2px);
+}
+.theme-toggle:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
 }
 .sidebar-stats {
     margin-top: 0;
-}
-
-/* Match the site's normal top-to-bottom gradient direction. */
-html[data-theme="dark"] #everything.levelBG {
-    background: linear-gradient(#7620b5 0%, #421078 42%, #18002d 100%);
-    background-attachment: fixed;
 }
 @media (max-width: 700px) {
     .theme-toggle {
