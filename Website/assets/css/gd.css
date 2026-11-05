@@ -1003,11 +1003,26 @@ html[data-theme="dark"] #everything.levelBG {
 }
 html[data-theme="dark"] .welcome-panel,
 html[data-theme="dark"] .sidebar-panel {
+    position: relative;
     background-color: #17121f;
-    border: 5px solid #000;
+    border: 5px solid transparent;
     border-image: none;
     color: #f1eaff;
     box-shadow: 0 7px 0 rgba(0, 0, 0, .45);
+}
+html[data-theme="dark"] .welcome-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border: 5px solid transparent;
+    border-image: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png") 10% round;
+    filter: hue-rotate(235deg) saturate(.75) brightness(.72);
+    pointer-events: none;
+}
+html[data-theme="dark"] .welcome-panel > * {
+    position: relative;
+    z-index: 1;
 }
 html[data-theme="dark"] .inner-panel,
 html[data-theme="dark"] .blog-post,
