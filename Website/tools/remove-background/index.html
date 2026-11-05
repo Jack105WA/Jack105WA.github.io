@@ -108,6 +108,11 @@
                 
                     <a class="gdButton nav-button orange-button" href="/updates"><span>Updates</span></a>
                 </nav>
+                <div class="sidebar-stats" aria-label="Website statistics">
+                    <h2 class="sidebar-heading">Website Stats</h2>
+                    <p>Hits: <strong id="nc-hits">...</strong></p>
+                    <p>Last updated: <strong id="nc-last_updated">...</strong></p>
+                </div>
             </section>
         </aside>
     </div>
@@ -254,5 +259,6 @@
         clearUrl(resultUrl);
     });
 </script>
+<script type="module" src="/assets/js/statget.js?v=3"></script>
 </body>
 </html>
