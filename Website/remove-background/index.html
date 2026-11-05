@@ -64,8 +64,8 @@
 <label for="qualitySelect" style="display:block;margin-bottom:7px">Processing quality</label>
 <select id="qualitySelect" style="width:100%;max-width:360px;padding:10px;border-radius:7px;border:1px solid rgba(255,255,255,.35);background:#352015;color:#fff">
 <option value="isnet_fp16">Balanced — faster, good for most images</option>
-<option value="isnet">High detail — slower, better edge refinement</option>
-</select></div><div class="tool-actions">
+<option value="isnet" selected>High detail — full-precision model, slower and more detailed</option>
+</select><p style="margin:9px 0 0;color:#eee;line-height:1.5">GPU acceleration uses WebGPU when your browser supports it. If unavailable, processing automatically falls back to your CPU.</p></div><div class="tool-actions">
                         <button class="gdButton nav-button green-button" id="removeButton" type="button" disabled>Remove Background</button>
                         <a class="gdButton nav-button blue-button" id="downloadButton" download="background-removed.png" hidden>Download PNG</a>
                         <button class="gdButton nav-button orange-button" id="resetButton" type="button" hidden>Choose Another</button>
@@ -171,13 +171,14 @@
         if (!selectedFile || isProcessing) return;
         isProcessing = true;
         removeButton.disabled = true;
-        setStatus("Loading the selected model. The first run downloads it; later runs can reuse the browser cache.");
+        setStatus("Loading the AI model. The first run downloads it; later runs can reuse the browser cache.");
         try {
             const { removeBackground } = await import("https://esm.sh/@imgly/background-removal@1.7.0");
-            setStatus("Removing the background… keep this tab open.");
+            setStatus(navigator.gpu ? "Removing the background with GPU acceleration when supported…" : "Removing the background. This browser will use CPU processing…");
             const model = qualitySelect.value;
             const resultBlob = await removeBackground(selectedFile, {
                 model,
+                device: "gpu",
                 output: { format: "image/png", quality: 1 },
                 progress: (key, current, total) => {
                     if (total > 0) {
@@ -192,7 +193,7 @@
             resultPreview.src = resultUrl;
             downloadButton.href = resultUrl;
             downloadButton.hidden = false;
-            setStatus("Done. Review the edges, then download the transparent PNG. High detail takes longer.");
+            setStatus("Done. Review the edges, then download the transparent PNG. High detail uses the full-precision model.");
         } catch (error) {
             console.error("Background removal failed:", error);
             setStatus("Could not remove the background. Check your connection, then retry. The first model download can be large.");
