@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!-- Updates page markup cleanup: keep the style block closed cleanly. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#9900ff">
+    <meta name="description" content="Recent changes and updates to the Jack105WA website.">
+    <title>Updates | Jack105WA</title>
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/gd.css">
+    <link rel="stylesheet" href="/assets/css/cursors.css">
+
+
+    <style>
+        .updates-intro{margin:0 0 16px;color:#fff;font:15px/1.6 Arial,sans-serif;text-align:center}
+        .update-entry{margin-top:15px;padding:17px;overflow-wrap:anywhere;border:2px solid rgba(0,0,0,.35);border-radius:9px;background:rgba(0,0,0,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);text-align:left}
+        .update-entry h3{margin:0 0 10px;color:var(--gold,#ffc800);font:22px "Pusab",Arial,sans-serif;text-shadow:2px 2px 0 #000}
+        .update-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;color:rgba(255,255,255,.7);font:12px Arial,sans-serif}
+        .update-entry p{margin:0 0 12px;color:#fff;font:16px/1.65 "Pusab",sans-serif;white-space:pre-wrap}
+        .update-entry a{color:#ffe06b;font:14px "Pusab",Arial,sans-serif;text-decoration:none}
+        .update-entry a:hover{text-decoration:underline}
+        .updates-status{margin:15px 0;color:#fff;font:16px/1.6 "Pusab",sans-serif;text-align:center;overflow-wrap:anywhere}
+        .updates-pagination{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;width:100%;margin:24px 0 5px;min-height:52px}.updates-pagination-controls{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;width:100%}.updates-page-numbers{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}.updates-page-number{min-width:34px;height:34px;padding:0 7px;border:2px solid rgba(255,255,255,.35);border-radius:6px;background:rgba(0,0,0,.25);color:#fff;font:15px "Pusab",Arial,sans-serif;cursor:pointer}.updates-page-number[aria-current="page"]{border-color:var(--gold,#ffc800);background:var(--gold,#ffc800);color:#241300;text-shadow:none}.updates-page-number:focus-visible{outline:3px solid #fff;outline-offset:3px}.updates-page-ellipsis{color:#fff;font:16px Arial,sans-serif}
+        .updates-page-info{margin:0;color:#fff;font:22px "Pusab",sans-serif;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 #000}
+        .updates-pagination .page-image-button{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;padding:0;border:0;background:transparent;cursor:pointer;flex-shrink:0;transition:transform 100ms ease}
+        .updates-pagination .page-image-button img{display:block;width:100%;height:100%;object-fit:contain}
+        .updates-pagination .page-image-button:not(:disabled):hover{transform:scale(1.08)}
+        .updates-pagination .page-image-button:active:not(:disabled){transform:scale(.94)}
+        .updates-pagination .page-image-button:disabled{opacity:.4;cursor:not-allowed}
+        .updates-pagination .page-image-button:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:5px}
+        @media(max-width:550px){.update-entry{padding:14px}.update-entry h3{font-size:20px}.update-entry p{font-size:15px}.updates-pagination{gap:13px;min-height:44px}.updates-pagination .page-image-button{width:44px;height:44px}.updates-page-info{font-size:18px}}
+        @media(max-width:380px){.updates-pagination{gap:8px}.updates-page-info{font-size:16px}}
+    </style>
+</head>
+<body>
+    <div id="everything" class="levelBG">
+        <div class="site-layout">
+            <main class="page-content">
+                <section class="brownBox welcome-panel updates-panel" aria-labelledby="updates-heading">
+                    <div class="section-heading">
+                        <h2 id="updates-heading">Website Updates</h2>
+                    </div>
+                    <p class="updates-intro">Recent changes to the website.</p>
+                    <div id="updates-list" aria-live="polite" aria-busy="true">
+                        <p class="updates-status">Loading updates from GitHub...</p>
+                    </div>
+                    <nav id="updates-pagination" class="updates-pagination" aria-label="Updates pages" hidden>
+                        <div class="updates-pagination-controls">
+                            <button id="updates-previous" class="page-image-button" type="button" aria-label="Previous page" title="Previous page" disabled><img src="/assets/emojis/GJ_undoBtn_001.png" alt=""></button>
+                            <div id="updates-page-numbers" class="updates-page-numbers" aria-label="Choose updates page"></div>
+                            <button id="updates-next" class="page-image-button" type="button" aria-label="Next page" title="Next page" disabled><img src="/assets/emojis/GJ_redoBtn_001.png" alt=""></button>
+                        </div>
+                        <p id="updates-page-info" class="updates-page-info" aria-live="polite">Page 1</p>
+                    </nav>
+                </section>
+            </main>
+            <aside class="site-sidebar" aria-label="Site navigation and statistics">
+                <section class="brownBox sidebar-panel">
+                    <h2 class="sidebar-heading">Navigation</h2>
+                    <nav class="sidebar-navigation" aria-label="Main navigation">
+                        <a class="gdButton nav-button blue-button" href="/"><span>Home</span></a>
+                        <a class="gdButton nav-button green-button" href="/blog"><span>Blog</span></a>
+                        <a class="gdButton nav-button purple-button" href="/tools"><span>Tools</span></a>
+                        <a class="gdButton nav-button orange-button" href="/updates"><span>Updates</span></a>
+                    </nav>
+                    <div class="sidebar-stats" aria-label="Website statistics">
+                        <h2 class="sidebar-heading">Website Stats</h2>
+                        <p>Hits: <strong id="nc-hits">...</strong></p>
+                        <p>Last updated: <strong id="nc-last_updated">...</strong></p>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+    <script type="module" src="/assets/js/statget.js?v=3"></script>
+    <script>
+        (() => {
+            "use strict";
+
+            const PER_PAGE = 3;
+            const VISIBLE_PAGE_COUNT = 10;
+            const list = document.getElementById("updates-list");
+            const pagination = document.getElementById("updates-pagination");
+            const pageInfo = document.getElementById("updates-page-info");
+            const pageNumbers = document.getElementById("updates-page-numbers");
+            const previous = document.getElementById("updates-previous");
+            const next = document.getElementById("updates-next");
+            const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits";
+            const fallbackURL = "/updates/changelog-fallback.json";
+            let currentPage = 1;
+            let totalPages = null;
+            let requestId = 0;
+            let currentPageHasMore = false;
+
+            function element(tag, className, text) {
+                const node = document.createElement(tag);
+                if (className) node.className = className;
+                if (text !== undefined) node.textContent = text;
+                return node;
+            }
+
+            function pageFromURL() {
+                const value = Number.parseInt(new URLSearchParams(location.search).get("page") || "1", 10);
+                return Number.isFinite(value) && value > 0 ? value : 1;
+            }
+
+            function setURL(page, replace) {
+                const url = new URL(location.href);
+                if (page === 1) url.searchParams.delete("page");
+                else url.searchParams.set("page", String(page));
+                history[replace ? "replaceState" : "pushState"]({ page }, "", url);
+            }
+
+            function formatDate(value) {
+                const date = new Date(value);
+                if (Number.isNaN(date.getTime())) return "Date unavailable";
+                return date.toLocaleString(undefined, {
+                    year: "numeric", month: "long", day: "numeric",
+                    hour: "numeric", minute: "2-digit"
+                });
+            }
+
+            function status(message) {
+                list.replaceChildren(element("p", "updates-status", message));
+                list.setAttribute("aria-busy", "false");
+                pagination.hidden = true;
+            }
+
+            function renderCommit(item) {
+                const commit = item.commit || {};
+                const details = commit.committer || commit.author || {};
+                const entry = element("article", "update-entry");
+                const heading = element("h3", "", (commit.message || "Website update").split("\n")[0]);
+                const author = commit.author && commit.author.name ? " · " + commit.author.name : "";
+                const meta = element("div", "update-meta", formatDate(details.date) + author);
+                const body = (commit.message || "").split("\n").slice(1).join("\n").trim();
+                const description = element("p", "", body || "Website changes and maintenance.");
+                const link = element("a", "", "View commit on GitHub");
+                link.href = item.html_url || "#";
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                entry.append(heading, meta, description, link);
+                return entry;
+            }
+
+            function renderPagination() {
+                pageNumbers.replaceChildren();
+                const knownTotal = totalPages;
+                const first = knownTotal
+                    ? Math.max(1, Math.min(
+                        currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2),
+                        Math.max(1, knownTotal - VISIBLE_PAGE_COUNT + 1)
+                    ))
+                    : Math.max(1, currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2));
+                const last = knownTotal
+                    ? Math.min(knownTotal, first + VISIBLE_PAGE_COUNT - 1)
+                    : first + VISIBLE_PAGE_COUNT - 1;
+
+                for (let page = first; page <= last; page++) {
+                    pageNumbers.appendChild(makePageButton(page));
+                }
+
+                previous.disabled = currentPage <= 1;
+                next.disabled = knownTotal !== null
+                    ? currentPage >= knownTotal
+                    : !currentPageHasMore;
+                pageInfo.textContent = knownTotal
+                    ? "Current page: " + currentPage + " of " + knownTotal
+                    : "Current page: " + currentPage;
+                pagination.hidden = false;
+            }
+
+            function makePageButton(page) {
+                const button = element("button", "updates-page-number", String(page));
+                button.type = "button";
+                button.setAttribute("aria-label", "Go to page " + page);
+                if (page === currentPage) button.setAttribute("aria-current", "page");
+                button.addEventListener("click", () => showPage(page, { updateURL: true, scroll: true }));
+                return button;
+            }
+
+            function renderPage(commits) {
+                list.replaceChildren();
+                if (!commits.length) {
+                    list.appendChild(element("p", "updates-status", "No updates were found on this page."));
+                } else {
+                    const fragment = document.createDocumentFragment();
+                    commits.forEach(commit => fragment.appendChild(renderCommit(commit)));
+                    list.appendChild(fragment);
+                }
+                list.setAttribute("aria-busy", "false");
+                renderPagination();
+            }
+
+            async function loadPage(page) {
+                const url = new URL(endpoint);
+                url.searchParams.set("sha", "main");
+                url.searchParams.set("per_page", String(PER_PAGE));
+                url.searchParams.set("page", String(page));
+
+                try {
+                    const response = await fetch(url, {
+                        cache: "no-store",
+                        headers: { "Accept": "application/vnd.github+json" }
+                    });
+                    if (!response.ok) {
+                        const detail = response.status === 403 || response.status === 429
+                            ? "GitHub API rate limit reached"
+                            : "GitHub returned HTTP " + response.status;
+                        throw new Error(detail);
+                    }
+
+                    const commits = await response.json();
+                    if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
+
+                    const linkHeader = response.headers.get("Link") || "";
+                    const lastLink = linkHeader.split(",").find(part => /rel="last"/.test(part));
+                    if (lastLink) {
+                        const match = lastLink.match(/[?&]page=(\d+)/);
+                        if (match) totalPages = Number(match[1]);
+                    } else if (!/rel="next"/.test(linkHeader)) {
+                        totalPages = commits.length === 0 ? Math.max(1, page - 1) : page;
+                    }
+
+                    return commits;
+                } catch (apiError) {
+                    console.warn("Live changelog request failed; trying fallback data:", apiError);
+                    const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
+                    if (!fallbackResponse.ok) throw apiError;
+                    const fallbackCommits = await fallbackResponse.json();
+                    if (!Array.isArray(fallbackCommits)) throw apiError;
+                    totalPages = Math.max(1, Math.ceil(fallbackCommits.length / PER_PAGE));
+                    return fallbackCommits.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+                }
+            }
+
+            async function showPage(page, options = {}) {
+                const request = ++requestId;
+                currentPage = Math.max(1, page);
+                list.setAttribute("aria-busy", "true");
+                list.replaceChildren(element("p", "updates-status", "Loading page " + currentPage + "..."));
+                pagination.hidden = true;
+
+                try {
+                    const commits = await loadPage(currentPage);
+                    if (request !== requestId) return;
+
+                    if (totalPages !== null && currentPage > totalPages) {
+                        return showPage(totalPages, options);
+                    }
+
+                    currentPageHasMore = commits.length === PER_PAGE;
+                    if (commits.length < PER_PAGE && totalPages === null) {
+                        totalPages = currentPage;
+                    }
+
+                    renderPage(commits);
+                    if (options.updateURL) setURL(currentPage, options.replaceURL === true);
+                    if (options.scroll) {
+                        document.getElementById("updates-heading").scrollIntoView({
+                            behavior: "smooth", block: "start"
+                        });
+                    }
+                } catch (error) {
+                    if (request !== requestId) return;
+                    console.error("Could not load GitHub updates:", error);
+                    status("Could not load the changelog. " + (error?.message || "Check your connection and try again."));
+                }
+            }
+
+            previous.addEventListener("click", () => {
+                if (currentPage > 1) showPage(currentPage - 1, { updateURL: true, scroll: true });
+            });
+            next.addEventListener("click", () => {
+                if (totalPages === null || currentPage < totalPages) {
+                    showPage(currentPage + 1, { updateURL: true, scroll: true });
+                }
+            });
+            window.addEventListener("popstate", () => showPage(pageFromURL()));
+            showPage(pageFromURL(), { updateURL: true, replaceURL: true });
+        })();
+    </script>
+</body>
+</html>
