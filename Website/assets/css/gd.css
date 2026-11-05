@@ -991,48 +991,37 @@ button:focus-visible {
 }
 
 
-/* Dark mode — recolor only; preserve the light-mode layout and geometry. */
+/* ==========================================================================
+   Dark mode
+   Reuse the light theme's exact panel structure and border artwork.
+   Only recolor surfaces and text; never recreate, filter, or overlay the
+   brownbox border image, because that changes its texture and corner pixels.
+   ========================================================================== */
+
 html[data-theme="dark"] {
     color-scheme: dark;
     background: #18002d;
 }
+
 html[data-theme="dark"] body {
     background: #18002d;
 }
+
 html[data-theme="dark"] #everything.levelBG {
     background: linear-gradient(#7620b5 0%, #421078 42%, #18002d 100%);
     background-attachment: fixed;
 }
 
-/* Keep the original 5px border, border radius, padding, and sizing.
-   The overlay recolors the existing image border without changing its shape. */
+/* These panels intentionally inherit the exact light-mode:
+   border, border-image, border-image slicing, radius, padding and sizing. */
 html[data-theme="dark"] .welcome-panel,
 html[data-theme="dark"] .sidebar-panel {
-    position: relative;
-    border-color: transparent;
-    border-image: none;
     background-color: #17121f;
     color: #f1eaff;
     box-shadow: 0 7px 0 rgba(0, 0, 0, .45);
 }
-html[data-theme="dark"] .welcome-panel::before,
-html[data-theme="dark"] .sidebar-panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border: 5px solid transparent;
-    border-radius: inherit;
-    border-image: url("https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png") 10% round;
-    filter: hue-rotate(235deg) saturate(.75) brightness(.72);
-    pointer-events: none;
-}
-html[data-theme="dark"] .welcome-panel > *,
-html[data-theme="dark"] .sidebar-panel > * {
-    position: relative;
-    z-index: 1;
-}
 
+/* Recolor inner surfaces without changing their dimensions or corner shape. */
 html[data-theme="dark"] .inner-panel,
 html[data-theme="dark"] .blog-post,
 html[data-theme="dark"] .tool-card,
@@ -1040,6 +1029,7 @@ html[data-theme="dark"] .preview-card {
     background: rgba(0, 0, 0, .58);
     border-color: rgba(0, 0, 0, .8);
 }
+
 html[data-theme="dark"] .inner-panel p,
 html[data-theme="dark"] .blog-post p,
 html[data-theme="dark"] .section-heading > p,
@@ -1052,29 +1042,34 @@ html[data-theme="dark"] .site-footer a {
     color: #f0e6ff !important;
     -webkit-text-fill-color: #f0e6ff !important;
 }
+
 html[data-theme="dark"] .post-meta,
 html[data-theme="dark"] .post-footer {
     color: #c7b4df;
 }
+
 html[data-theme="dark"] .post-footer strong,
 html[data-theme="dark"] .sidebar-stats strong {
     color: #fff;
 }
+
 html[data-theme="dark"] .upload-zone {
     background: rgba(0, 0, 0, .65);
     border-color: #9b73c2;
     color: #f0e6ff;
 }
+
 html[data-theme="dark"] .upload-zone:hover,
 html[data-theme="dark"] .upload-zone.dragging {
     background: rgba(0, 0, 0, .85);
     border-color: #ffd21c;
 }
+
 html[data-theme="dark"] .site-footer {
     border-color: rgba(255, 255, 255, .12);
 }
 
-/* Theme switch keeps the same dimensions and button styling in both themes. */
+/* Theme switch retains identical dimensions in both themes. */
 .theme-toggle {
     position: static;
     display: inline-flex;
@@ -1086,20 +1081,25 @@ html[data-theme="dark"] .site-footer {
     cursor: pointer;
     flex: 0 0 auto;
 }
+
 .theme-toggle:hover {
     filter: brightness(1.15);
     transform: translateY(-2px);
 }
+
 .theme-toggle:active {
     transform: translateY(2px);
 }
+
 .theme-toggle:focus-visible {
     outline: 3px solid #fff;
     outline-offset: 3px;
 }
+
 .sidebar-stats {
     margin-top: 0;
 }
+
 @media (max-width: 700px) {
     .theme-toggle {
         flex: 0 0 auto;
