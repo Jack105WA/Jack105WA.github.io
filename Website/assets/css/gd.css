@@ -1012,6 +1012,19 @@ html[data-theme="dark"] #everything.levelBG {
     background-attachment: fixed;
 }
 
+/* Recolor the actual brownbox artwork through an SVG image filter.
+   The original PNG remains the source, so its texture, alpha and corner shape
+   are retained instead of approximated with a CSS gradient. */
+html[data-theme="dark"] .welcome-panel,
+html[data-theme="dark"] .sidebar-panel {
+    border-image-source: url("/assets/dark-brownbox.svg");
+}
+
+/* Both outer panels use the same corner radius in either theme. */
+.sidebar-panel {
+    border-radius: 17px;
+}
+
 /* These panels intentionally inherit the exact light-mode:
    border, border-image, border-image slicing, radius, padding and sizing. */
 html[data-theme="dark"] .welcome-panel,
