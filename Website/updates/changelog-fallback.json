@@ -1,0 +1,458 @@
+[
+  {
+    "sha": "aa7a0a8d961d80968d09aa2698e76f5a5cd7bbe8",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/aa7a0a8d961d80968d09aa2698e76f5a5cd7bbe8",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:01:32Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:01:32Z"
+      },
+      "message": "Bust cache for fixed blog pagination"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "7c944ba3e2cacc5766eb02eec377e2e9b1d7e046",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/7c944ba3e2cacc5766eb02eec377e2e9b1d7e046",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:01:22Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:01:22Z"
+      },
+      "message": "Delete unused dark mode panel artwork"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "2ecd08957b738c541202fd07ba8055e5fe3b3e32",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/2ecd08957b738c541202fd07ba8055e5fe3b3e32",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:40Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:40Z"
+      },
+      "message": "Delete unused dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "35d4009cd694fd425d404f802f67eb98b8f69ebe",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/35d4009cd694fd425d404f802f67eb98b8f69ebe",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:37Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:37Z"
+      },
+      "message": "Remove dark mode styling from updates"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "ad5cf4ade8b925a262e3a4446be5b3ca7571283e",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/ad5cf4ade8b925a262e3a4446be5b3ca7571283e",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:35Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:35Z"
+      },
+      "message": "Remove dark mode styles"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "21f5cea0c74c349eb6076d381c6ab1581175d756",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/21f5cea0c74c349eb6076d381c6ab1581175d756",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:32Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:32Z"
+      },
+      "message": "Remove dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "f460b2e4a95393e40d3730a32e50775fdad3ad6f",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/f460b2e4a95393e40d3730a32e50775fdad3ad6f",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:29Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:29Z"
+      },
+      "message": "Remove dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "841df0c31690d84b01a6c887b80f36480570df9f",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/841df0c31690d84b01a6c887b80f36480570df9f",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:26Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:26Z"
+      },
+      "message": "Remove dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "30f13842079098340cdfddfe9959655b134ea319",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/30f13842079098340cdfddfe9959655b134ea319",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:24Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:24Z"
+      },
+      "message": "Remove dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "43082539293145cbdd15c95db6306b3f18d40831",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/43082539293145cbdd15c95db6306b3f18d40831",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:21Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:21Z"
+      },
+      "message": "Remove dark mode script"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "3cf90d7daadc46b11ffec0a8528163d85ccc37fc",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/3cf90d7daadc46b11ffec0a8528163d85ccc37fc",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:19Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T06:00:19Z"
+      },
+      "message": "Fix Firestore blog pagination with cursors"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  },
+  {
+    "sha": "ed3ffaa1e088ec8f393c4e9cebbb603c43d3daf9",
+    "html_url": "https://github.com/Jack105WA/Jack105WA.github.io/commit/ed3ffaa1e088ec8f393c4e9cebbb603c43d3daf9",
+    "commit": {
+      "author": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T05:57:21Z"
+      },
+      "committer": {
+        "name": "Jack105WA",
+        "email": "137959709+Jack105WA@users.noreply.github.com",
+        "date": "2026-11-05T05:57:21Z"
+      },
+      "message": "Fetch updates one page at a time"
+    },
+    "author": {
+      "login": "Jack105WA",
+      "id": 137959709,
+      "node_id": "U_kgDOCDkZHQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137959709?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Jack105WA",
+      "html_url": "https://github.com/Jack105WA",
+      "followers_url": "https://api.github.com/users/Jack105WA/followers",
+      "following_url": "https://api.github.com/users/Jack105WA/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Jack105WA/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Jack105WA/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Jack105WA/subscriptions",
+      "organizations_url": "https://api.github.com/users/Jack105WA/orgs",
+      "repos_url": "https://api.github.com/users/Jack105WA/repos",
+      "events_url": "https://api.github.com/users/Jack105WA/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Jack105WA/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    }
+  }
+]
