@@ -176,18 +176,50 @@
             const { removeBackground } = await import("https://esm.sh/@imgly/background-removal@1.7.0");
             setStatus(navigator.gpu ? "Removing the background with GPU acceleration when supported…" : "Removing the background. This browser will use CPU processing…");
             const model = qualitySelect.value;
-            const resultBlob = await removeBackground(selectedFile, {
-                model,
-                device: "gpu",
-                output: { format: "image/png", quality: 1 },
-                progress: (key, current, total) => {
-                    if (total > 0) {
-                        setStatus("Preparing model: " + Math.round((current / total) * 100) + "%");
+            // IMG.LY chooses its WASM thread count from navigator.hardwareConcurrency.
+            // GitHub Pages cannot add the COOP/COEP headers needed for shared-memory
+            // threading, so temporarily report one core to avoid unsupported threads.
+            const hardwareConcurrencyDescriptor =
+                Object.getOwnPropertyDescriptor(navigator, "hardwareConcurrency");
+            let restoreHardwareConcurrency = false;
+
+            try {
+                Object.defineProperty(navigator, "hardwareConcurrency", {
+                    configurable: true,
+                    value: 1
+                });
+                restoreHardwareConcurrency = true;
+            } catch (error) {
+                console.warn("Could not limit WASM threads:", error);
+            }
+
+            let resultBlob;
+            try {
+                resultBlob = await removeBackground(selectedFile, {
+                    model,
+                    device: "gpu",
+                    output: { format: "image/png", quality: 1 },
+                    progress: (key, current, total) => {
+                        if (total > 0) {
+                            setStatus("Preparing model: " + Math.round((current / total) * 100) + "%");
+                        } else {
+                            setStatus("Preparing model…");
+                        }
+                    }
+                });
+            } finally {
+                if (restoreHardwareConcurrency) {
+                    if (hardwareConcurrencyDescriptor) {
+                        Object.defineProperty(
+                            navigator,
+                            "hardwareConcurrency",
+                            hardwareConcurrencyDescriptor
+                        );
                     } else {
-                        setStatus("Preparing model…");
+                        delete navigator.hardwareConcurrency;
                     }
                 }
-            });
+            }
             clearResult();
             resultUrl = URL.createObjectURL(resultBlob);
             resultPreview.src = resultUrl;
