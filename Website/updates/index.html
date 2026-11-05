@@ -21,7 +21,7 @@
         .update-entry a{color:#ffe06b;font:14px "Pusab",Arial,sans-serif;text-decoration:none}
         .update-entry a:hover{text-decoration:underline}
         .updates-status{margin:15px 0;color:#fff;font:16px/1.6 "Pusab",sans-serif;text-align:center;overflow-wrap:anywhere}
-        .updates-pagination{position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:18px;width:100%;margin:24px 0 5px;min-height:52px}
+        .updates-pagination{position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;width:100%;margin:24px 0 5px;min-height:52px}.updates-page-numbers{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}.updates-page-number{min-width:34px;height:34px;padding:0 7px;border:2px solid rgba(255,255,255,.35);border-radius:6px;background:rgba(0,0,0,.25);color:#fff;font:15px "Pusab",Arial,sans-serif;cursor:pointer}.updates-page-number[aria-current="page"]{border-color:var(--gold,#ffc800);background:var(--gold,#ffc800);color:#241300;text-shadow:none}.updates-page-number:focus-visible{outline:3px solid #fff;outline-offset:3px}.updates-page-ellipsis{color:#fff;font:16px Arial,sans-serif}
         .updates-page-info{margin:0;color:#fff;font:22px "Pusab",sans-serif;text-align:center;white-space:nowrap;text-shadow:2px 2px 0 #000}
         .updates-pagination .page-image-button{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;padding:0;border:0;background:transparent;cursor:pointer;flex-shrink:0;transition:transform 100ms ease}
         .updates-pagination .page-image-button img{display:block;width:100%;height:100%;object-fit:contain}
@@ -47,8 +47,9 @@
                     </div>
                     <nav id="updates-pagination" class="updates-pagination" aria-label="Updates pages" hidden>
                         <button id="updates-previous" class="page-image-button" type="button" aria-label="Previous page" title="Previous page" disabled><img src="/assets/emojis/GJ_undoBtn_001.png" alt=""></button>
-                        <p id="updates-page-info" class="updates-page-info" aria-live="polite">Page 1 of 1</p>
+                        <div id="updates-page-numbers" class="updates-page-numbers" aria-label="Choose updates page"></div>
                         <button id="updates-next" class="page-image-button" type="button" aria-label="Next page" title="Next page" disabled><img src="/assets/emojis/GJ_redoBtn_001.png" alt=""></button>
+                        <p id="updates-page-info" class="updates-page-info" aria-live="polite">Page 1</p>
                     </nav>
                 </section>
             </main>
@@ -76,19 +77,20 @@
             "use strict";
 
             const PER_PAGE = 3;
+            const VISIBLE_PAGE_COUNT = 10;
             const list = document.getElementById("updates-list");
             const pagination = document.getElementById("updates-pagination");
             const pageInfo = document.getElementById("updates-page-info");
+            const pageNumbers = document.getElementById("updates-page-numbers");
             const previous = document.getElementById("updates-previous");
             const next = document.getElementById("updates-next");
             const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits";
             const fallbackURL = "/updates/changelog-fallback.json";
             let currentPage = 1;
-            let totalPages = 1;
+            let totalPages = null;
             let requestId = 0;
-            let commitsCache = null;
-            // Session-only cache: reuse the fetched commit list while this page stays open.
-            // It is intentionally memory-only and is cleared automatically on refresh.
+            const pageCache = new Map();
+            let fallbackCommits = null;
 
             function element(tag, className, text) {
                 const node = document.createElement(tag);
@@ -134,11 +136,51 @@
                 const body = (commit.message || "").split("\n").slice(1).join("\n").trim();
                 const description = element("p", "", body || "Website changes and maintenance.");
                 const link = element("a", "", "View commit on GitHub");
-                link.href = item.html_url;
+                link.href = item.html_url || "#";
                 link.target = "_blank";
                 link.rel = "noopener noreferrer";
                 entry.append(heading, meta, description, link);
                 return entry;
+            }
+
+            function renderPagination() {
+                pageNumbers.replaceChildren();
+                const knownTotal = totalPages;
+                const first = Math.max(1, Math.min(
+                    currentPage - Math.floor(VISIBLE_PAGE_COUNT / 2),
+                    knownTotal ? knownTotal - VISIBLE_PAGE_COUNT + 1 : currentPage
+                ));
+                const last = knownTotal
+                    ? Math.min(knownTotal, first + VISIBLE_PAGE_COUNT - 1)
+                    : first + VISIBLE_PAGE_COUNT - 1;
+
+                if (first > 1) {
+                    const firstButton = makePageButton(1);
+                    pageNumbers.append(firstButton, element("span", "updates-page-ellipsis", "…"));
+                }
+
+                for (let page = first; page <= last; page++) {
+                    pageNumbers.appendChild(makePageButton(page));
+                }
+
+                if (knownTotal && last < knownTotal) {
+                    pageNumbers.append(element("span", "updates-page-ellipsis", "…"), makePageButton(knownTotal));
+                }
+
+                previous.disabled = currentPage <= 1;
+                next.disabled = knownTotal !== null && currentPage >= knownTotal;
+                next.disabled = knownTotal === null && pageCache.has(currentPage) && pageCache.get(currentPage).length < PER_PAGE;
+                pageInfo.textContent = knownTotal ? "Page " + currentPage + " of " + knownTotal : "Page " + currentPage;
+                pagination.hidden = false;
+            }
+
+            function makePageButton(page) {
+                const button = element("button", "updates-page-number", String(page));
+                button.type = "button";
+                button.setAttribute("aria-label", "Go to page " + page);
+                if (page === currentPage) button.setAttribute("aria-current", "page");
+                button.addEventListener("click", () => showPage(page, { updateURL: true, scroll: true }));
+                return button;
             }
 
             function renderPage(commits) {
@@ -150,62 +192,78 @@
                     commits.forEach(commit => fragment.appendChild(renderCommit(commit)));
                     list.appendChild(fragment);
                 }
-
-                pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
-                previous.disabled = currentPage <= 1;
-                next.disabled = currentPage >= totalPages;
-                pagination.hidden = totalPages <= 1;
                 list.setAttribute("aria-busy", "false");
+                renderPagination();
+            }
+
+            async function loadPage(page) {
+                if (pageCache.has(page)) return pageCache.get(page);
+
+                if (fallbackCommits) {
+                    const fallbackPage = fallbackCommits.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+                    pageCache.set(page, fallbackPage);
+                    return fallbackPage;
+                }
+
+                const url = new URL(endpoint);
+                url.searchParams.set("sha", "main");
+                url.searchParams.set("per_page", String(PER_PAGE));
+                url.searchParams.set("page", String(page));
+
+                try {
+                    const response = await fetch(url, {
+                        cache: "no-store",
+                        headers: { "Accept": "application/vnd.github+json" }
+                    });
+                    if (!response.ok) {
+                        const detail = response.status === 403 || response.status === 429
+                            ? "GitHub API rate limit reached"
+                            : "GitHub returned HTTP " + response.status;
+                        throw new Error(detail);
+                    }
+
+                    const commits = await response.json();
+                    if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
+
+                    const linkHeader = response.headers.get("Link") || "";
+                    const lastLink = linkHeader.split(",").find(part => /rel="last"/.test(part));
+                    if (lastLink) {
+                        const match = lastLink.match(/[?&]page=(\d+)/);
+                        if (match) totalPages = Number(match[1]);
+                    } else if (!/rel="next"/.test(linkHeader)) {
+                        totalPages = page;
+                    }
+
+                    pageCache.set(page, commits);
+                    return commits;
+                } catch (apiError) {
+                    console.warn("Live changelog request failed; trying fallback data:", apiError);
+                    const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
+                    if (!fallbackResponse.ok) throw apiError;
+                    fallbackCommits = await fallbackResponse.json();
+                    if (!Array.isArray(fallbackCommits)) throw apiError;
+                    totalPages = Math.max(1, Math.ceil(fallbackCommits.length / PER_PAGE));
+                    return loadPage(page);
+                }
             }
 
             async function showPage(page, options = {}) {
                 const request = ++requestId;
                 currentPage = Math.max(1, page);
                 list.setAttribute("aria-busy", "true");
-                list.replaceChildren(element("p", "updates-status", "Loading updates from GitHub..."));
+                list.replaceChildren(element("p", "updates-status", "Loading page " + currentPage + "..."));
                 pagination.hidden = true;
 
                 try {
-                    const url = new URL(endpoint);
-                    url.searchParams.set("sha", "main");
-                    url.searchParams.set("per_page", "100");
-                    url.searchParams.set("page", "1");
-
-                    // Fetch the commit list once per page load. All pagination after
-                    // this point uses the in-memory array, never another API request.
-                    let commits = commitsCache;
-                    if (!commits) {
-                        try {
-                            const response = await fetch(url, {
-                                cache: "no-store",
-                                headers: { "Accept": "application/vnd.github+json" }
-                            });
-                            if (!response.ok) {
-                                const detail = response.status === 403 || response.status === 429
-                                    ? "GitHub API rate limit reached"
-                                    : "GitHub returned HTTP " + response.status;
-                                throw new Error(detail);
-                            }
-                            commits = await response.json();
-                            if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
-                        } catch (apiError) {
-                            console.warn("Live changelog request failed; trying fallback data:", apiError);
-                            const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
-                            if (!fallbackResponse.ok) throw apiError;
-                            commits = await fallbackResponse.json();
-                            if (!Array.isArray(commits)) throw apiError;
-                        }
-                        commitsCache = commits;
-                    }
-                    totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
-                    currentPage = Math.min(currentPage, totalPages);
-                    commits = commits.slice(
-                        (currentPage - 1) * PER_PAGE,
-                        currentPage * PER_PAGE
-                    );
+                    const commits = await loadPage(currentPage);
                     if (request !== requestId) return;
-                    if (commits.length === 0 && currentPage > totalPages) {
+
+                    if (totalPages !== null && currentPage > totalPages) {
                         return showPage(totalPages, options);
+                    }
+
+                    if (commits.length < PER_PAGE && totalPages === null) {
+                        totalPages = currentPage;
                     }
 
                     renderPage(commits);
@@ -226,7 +284,9 @@
                 if (currentPage > 1) showPage(currentPage - 1, { updateURL: true, scroll: true });
             });
             next.addEventListener("click", () => {
-                if (currentPage < totalPages) showPage(currentPage + 1, { updateURL: true, scroll: true });
+                if (totalPages === null || currentPage < totalPages) {
+                    showPage(currentPage + 1, { updateURL: true, scroll: true });
+                }
             });
             window.addEventListener("popstate", () => showPage(pageFromURL()));
             showPage(pageFromURL(), { updateURL: true, replaceURL: true });
