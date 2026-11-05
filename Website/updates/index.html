@@ -82,7 +82,7 @@
             const previous = document.getElementById("updates-previous");
             const next = document.getElementById("updates-next");
             const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits";
-            const cacheKey = "jack105wa-changelog-v1";
+            const cacheKey = "jack105wa-changelog-v1:" + currentPage;
             const fallbackURL = "/updates/changelog-fallback.json";
             let currentPage = 1;
             let totalPages = 1;
@@ -194,8 +194,8 @@
                         }
                         commits = await response.json();
                         if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
-                        try { localStorage.setItem(cacheKey, JSON.stringify(commits)); } catch {}
                         totalPages = lastPageFromHeader(response.headers.get("Link"), currentPage);
+                        try { localStorage.setItem(cacheKey, JSON.stringify({ commits, totalPages })); } catch {}
                     } catch (apiError) {
                         console.warn("Live changelog request failed; trying saved data:", apiError);
                         let cached = null;
@@ -203,15 +203,19 @@
                             const saved = localStorage.getItem(cacheKey);
                             if (saved) cached = JSON.parse(saved);
                         } catch {}
-                        if (Array.isArray(cached) && cached.length) {
-                            commits = cached;
-                            totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
+                        if (cached && Array.isArray(cached.commits) && cached.commits.length) {
+                            commits = cached.commits;
+                            totalPages = Number(cached.totalPages) || 1;
                         } else {
                             const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
                             if (!fallbackResponse.ok) throw apiError;
-                            commits = await fallbackResponse.json();
-                            if (!Array.isArray(commits)) throw apiError;
-                            totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
+                            const allFallbackCommits = await fallbackResponse.json();
+                            if (!Array.isArray(allFallbackCommits)) throw apiError;
+                            totalPages = Math.max(1, Math.ceil(allFallbackCommits.length / PER_PAGE));
+                            commits = allFallbackCommits.slice(
+                                (currentPage - 1) * PER_PAGE,
+                                currentPage * PER_PAGE
+                            );
                         }
                     }
                     if (request !== requestId) return;
