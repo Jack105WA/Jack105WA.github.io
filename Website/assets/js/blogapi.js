@@ -1,6 +1,6 @@
-import { db, authPersistence } from "./firebase-config.js";
+import { db } from "./firebase-config.js";
 import {
-    collection, getCountFromServer, getDocs, limit, orderBy, query, startAfter, where
+    collection, getDocs, query, where
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 (() => {
@@ -16,7 +16,7 @@ import {
     let currentPage = 1;
     let totalPages = 1;
     let requestId = 0;
-    const cursorByPage = new Map([[1, null]]);
+    let publishedPostsPromise = null;
 
     function node(tag, className = "", text) {
         const result = document.createElement(tag);
@@ -123,6 +123,29 @@ import {
         el.pagination.hidden = true;
     }
 
+    function dateValue(value) {
+        if (value && typeof value.toMillis === "function") return value.toMillis();
+        if (value instanceof Date) return value.getTime();
+        const parsed = Date.parse(String(value || ""));
+        return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    async function getPublishedPosts() {
+        if (!publishedPostsPromise) {
+            publishedPostsPromise = getDocs(query(
+                collection(db, "posts"),
+                where("published", "==", true)
+            )).then(snapshot => snapshot.docs.sort((a, b) => {
+                const difference = dateValue(b.data().date) - dateValue(a.data().date);
+                return difference || a.id.localeCompare(b.id);
+            })).catch(error => {
+                publishedPostsPromise = null;
+                throw error;
+            });
+        }
+        return publishedPostsPromise;
+    }
+
     async function showPage(page, options = {}) {
         const request = ++requestId;
         currentPage = Math.max(1, page);
@@ -131,65 +154,26 @@ import {
         el.pagination.hidden = true;
 
         try {
-            await authPersistence;
             if (!db) throw new Error("Firestore database is not initialized. Check firebase-config.js.");
 
-            const postsCollection = collection(db, "posts");
-            const published = where("published", "==", true);
-
-            // Count only; the actual post query below retrieves this page's three documents.
-            const countSnapshot = await getCountFromServer(query(postsCollection, published));
-            totalPages = Math.max(1, Math.ceil(countSnapshot.data().count / PER_PAGE));
-            currentPage = Math.min(currentPage, totalPages);
-
-            // Firestore's web SDK has no offset() query constraint. Build page
-            // cursors with startAfter(), fetching only one small page per request.
-            let cursor = cursorByPage.get(currentPage);
-            if (currentPage > 1 && cursor === undefined) {
-                let previousCursor = cursorByPage.get(1);
-                for (let page = 1; page < currentPage; page++) {
-                    if (cursorByPage.has(page + 1)) {
-                        previousCursor = cursorByPage.get(page + 1);
-                        continue;
-                    }
-                    const cursorQuery = query(
-                        postsCollection,
-                        published,
-                        orderBy("date", "desc"),
-                        ...(previousCursor ? [startAfter(previousCursor)] : []),
-                        limit(PER_PAGE)
-                    );
-                    const cursorSnapshot = await getDocs(cursorQuery);
-                    if (request !== requestId) return;
-                    if (cursorSnapshot.empty) {
-                        currentPage = page;
-                        break;
-                    }
-                    previousCursor = cursorSnapshot.docs[cursorSnapshot.docs.length - 1];
-                    cursorByPage.set(page + 1, previousCursor);
-                }
-                cursor = cursorByPage.get(currentPage);
-            }
-
-            const pageQuery = query(
-                postsCollection,
-                published,
-                orderBy("date", "desc"),
-                ...(cursor ? [startAfter(cursor)] : []),
-                limit(PER_PAGE)
-            );
-            const snapshot = await getDocs(pageQuery);
-            if (snapshot.docs.length) {
-                cursorByPage.set(currentPage + 1, snapshot.docs[snapshot.docs.length - 1]);
-            }
+            // Read published posts only. Sorting and pagination happen locally,
+            // avoiding a composite Firestore index for published + date.
+            const posts = await getPublishedPosts();
             if (request !== requestId) return;
 
+            totalPages = Math.max(1, Math.ceil(posts.length / PER_PAGE));
+            currentPage = Math.min(currentPage, totalPages);
+            const pagePosts = posts.slice(
+                (currentPage - 1) * PER_PAGE,
+                currentPage * PER_PAGE
+            );
+
             el.posts.replaceChildren();
-            if (snapshot.empty) {
-                el.posts.appendChild(node("p", "blog-status", "No blog posts on this page."));
+            if (!pagePosts.length) {
+                el.posts.appendChild(node("p", "blog-status", "No blog posts yet."));
             } else {
                 const fragment = document.createDocumentFragment();
-                snapshot.docs.forEach(doc => fragment.appendChild(renderPost(doc.id, doc.data())));
+                pagePosts.forEach(doc => fragment.appendChild(renderPost(doc.id, doc.data())));
                 el.posts.appendChild(fragment);
             }
 
@@ -203,8 +187,9 @@ import {
             }
         } catch (error) {
             if (request !== requestId) return;
-            console.error("Firebase blog error:", error);
-            showError("Unable to load blog posts. Check your Firebase configuration, Firestore database, and security rules.");
+            console.error("Firebase blog error:", error?.code || "", error);
+            const detail = error?.code ? " (" + error.code + ")" : "";
+            showError("Unable to load blog posts. Check Firebase configuration and Firestore read permissions." + detail);
         }
     }
 
