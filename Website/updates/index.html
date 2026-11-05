@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#9900ff">
+    <meta name="description" content="Recent changes and updates to the Jack105WA website.">
+    <title>Updates | Jack105WA</title>
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/gd.css">
+    <link rel="stylesheet" href="/assets/css/cursors.css">
+    <script src="/assets/js/dark-mode.js" defer></script>
+    <style>
+        html, body { height: auto; min-height: 100%; overflow: auto !important; }
+        #everything.levelBG { min-height: 100vh; height: auto; overflow: visible; }
+        .site-layout { min-height: calc(100vh - 36px); overflow: visible; }
+        .page-content, .welcome-panel { height: auto; min-height: 0; overflow: visible; }
+        .updates-intro {
+            margin: 0 0 18px;
+            color: #fff;
+            font: 15px/1.6 Arial, sans-serif;
+            text-align: center;
+        }
+        .updates-list { display: grid; gap: 13px; }
+        .update-entry {
+            padding: 16px;
+            border: 2px solid rgba(0,0,0,.35);
+            border-radius: 9px;
+            background: rgba(0,0,0,.25);
+            overflow-wrap: anywhere;
+        }
+        .update-entry h3 {
+            margin: 0 0 8px;
+            color: #ffd21c;
+            font: 21px "Pusab", Arial, sans-serif;
+            text-shadow: 2px 2px 0 #000;
+        }
+        .update-meta {
+            margin: 0 0 9px;
+            color: rgba(255,255,255,.7);
+            font: 12px/1.5 Arial, sans-serif;
+        }
+        .update-entry p {
+            margin: 0;
+            color: #fff;
+            font: 14px/1.6 Arial, sans-serif;
+            white-space: pre-wrap;
+        }
+        .update-entry a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #ffe06b;
+            font: 13px Arial, sans-serif;
+            text-decoration: none;
+        }
+        .update-entry a:hover { text-decoration: underline; }
+        .updates-status {
+            margin: 20px 0;
+            color: #fff;
+            font: 15px/1.6 Arial, sans-serif;
+            text-align: center;
+        }
+        html[data-theme="dark"] .update-entry { background: rgba(0,0,0,.58); border-color: rgba(0,0,0,.8); }
+        html[data-theme="dark"] .update-entry p { color: #f0e6ff; }
+        html[data-theme="dark"] .update-meta { color: #c7b4df; }
+        @media (max-width:700px) {
+            .update-entry { padding: 13px; }
+            .update-entry h3 { font-size: 19px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="everything" class="levelBG">
+        <div class="site-layout">
+            <main class="page-content">
+                <section class="brownBox welcome-panel" aria-labelledby="updates-heading">
+                    <div class="section-heading">
+                        <h2 id="updates-heading">Website Updates</h2>
+                    </div>
+                    <p class="updates-intro">A live changelog of commits made to this website's GitHub repository.</p>
+                    <div id="updates-list" class="updates-list" aria-live="polite" aria-busy="true">
+                        <p class="updates-status">Loading updates from GitHub...</p>
+                    </div>
+                </section>
+            </main>
+            <aside class="site-sidebar" aria-label="Site navigation and statistics">
+                <section class="brownBox sidebar-panel">
+                    <h2 class="sidebar-heading">Navigation</h2>
+                    <nav class="sidebar-navigation" aria-label="Main navigation">
+                        <a class="gdButton nav-button blue-button" href="/"><span>Home</span></a>
+                        <a class="gdButton nav-button green-button" href="/blog"><span>Blog</span></a>
+                        <a class="gdButton nav-button purple-button" href="/tools"><span>Tools</span></a>
+                        <a class="gdButton nav-button orange-button" href="/updates"><span>Updates</span></a>
+                    </nav>
+                    <div class="sidebar-stats" aria-label="Website statistics">
+                        <h2 class="sidebar-heading">Website Stats</h2>
+                        <p>Hits: <strong id="nc-hits">...</strong></p>
+                        <p>Last updated: <strong id="nc-last_updated">...</strong></p>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+    <script type="module" src="/assets/js/statget.js?v=2"></script>
+    <script>
+        (() => {
+            const list = document.getElementById("updates-list");
+            const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits?per_page=100";
+
+            function showStatus(message) {
+                list.replaceChildren();
+                const status = document.createElement("p");
+                status.className = "updates-status";
+                status.textContent = message;
+                list.appendChild(status);
+                list.setAttribute("aria-busy", "false");
+            }
+
+            function formatDate(value) {
+                const date = new Date(value);
+                if (Number.isNaN(date.getTime())) return "Date unavailable";
+                return date.toLocaleString(undefined, {
+                    year: "numeric", month: "long", day: "numeric",
+                    hour: "numeric", minute: "2-digit"
+                });
+            }
+
+            async function loadUpdates() {
+                try {
+                    const response = await fetch(endpoint, {
+                        headers: { "Accept": "application/vnd.github+json" }
+                    });
+                    if (!response.ok) {
+                        throw new Error("GitHub returned HTTP " + response.status);
+                    }
+                    const commits = await response.json();
+                    if (!Array.isArray(commits) || commits.length === 0) {
+                        showStatus("No commits were found.");
+                        return;
+                    }
+
+                    const fragment = document.createDocumentFragment();
+                    for (const item of commits) {
+                        const commit = item.commit || {};
+                        const details = commit.committer || commit.author || {};
+                        const entry = document.createElement("article");
+                        entry.className = "update-entry";
+
+                        const heading = document.createElement("h3");
+                        heading.textContent = (commit.message || "Website update").split("\n")[0];
+
+                        const meta = document.createElement("div");
+                        meta.className = "update-meta";
+                        meta.textContent = formatDate(details.date) +
+                            (commit.author && commit.author.name ? " · " + commit.author.name : "");
+
+                        const description = document.createElement("p");
+                        const body = (commit.message || "").split("\n").slice(1).join("\n").trim();
+                        description.textContent = body || "Website changes and maintenance.";
+
+                        const link = document.createElement("a");
+                        link.href = item.html_url;
+                        link.target = "_blank";
+                        link.rel = "noopener noreferrer";
+                        link.textContent = "View commit on GitHub";
+
+                        entry.append(heading, meta, description, link);
+                        fragment.appendChild(entry);
+                    }
+
+                    list.replaceChildren(fragment);
+                    list.setAttribute("aria-busy", "false");
+                } catch (error) {
+                    console.error("Could not load GitHub updates:", error);
+                    showStatus("Could not load the changelog. Please refresh the page and try again.");
+                }
+            }
+
+            loadUpdates();
+        })();
+    </script>
+</body>
+</html>
