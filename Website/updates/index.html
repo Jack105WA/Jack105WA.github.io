@@ -82,11 +82,11 @@
             const previous = document.getElementById("updates-previous");
             const next = document.getElementById("updates-next");
             const endpoint = "https://api.github.com/repos/Jack105WA/Jack105WA.github.io/commits";
-            const cacheKey = "jack105wa-changelog-v1:" + currentPage;
             const fallbackURL = "/updates/changelog-fallback.json";
             let currentPage = 1;
             let totalPages = 1;
             let requestId = 0;
+            const cacheKey = "jack105wa-changelog-v2";
 
             function element(tag, className, text) {
                 const node = document.createElement(tag);
@@ -105,16 +105,6 @@
                 if (page === 1) url.searchParams.delete("page");
                 else url.searchParams.set("page", String(page));
                 history[replace ? "replaceState" : "pushState"]({ page }, "", url);
-            }
-
-            function lastPageFromHeader(header, fallback) {
-                if (!header) return fallback;
-                for (const part of header.split(",")) {
-                    if (!/rel="last"/.test(part)) continue;
-                    const match = part.match(/[?&]page=(\d+)/);
-                    if (match) return Math.max(1, Number(match[1]));
-                }
-                return fallback;
             }
 
             function formatDate(value) {
@@ -176,8 +166,8 @@
                 try {
                     const url = new URL(endpoint);
                     url.searchParams.set("sha", "main");
-                    url.searchParams.set("per_page", String(PER_PAGE));
-                    url.searchParams.set("page", String(currentPage));
+                    url.searchParams.set("per_page", "100");
+                    url.searchParams.set("page", "1");
 
                     // GitHub returns only this page's three commits, not the full history.
                     let commits;
@@ -194,7 +184,7 @@
                         }
                         commits = await response.json();
                         if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid response.");
-                        totalPages = lastPageFromHeader(response.headers.get("Link"), currentPage);
+                        totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
                         try { localStorage.setItem(cacheKey, JSON.stringify({ commits, totalPages })); } catch {}
                     } catch (apiError) {
                         console.warn("Live changelog request failed; trying saved data:", apiError);
@@ -203,21 +193,21 @@
                             const saved = localStorage.getItem(cacheKey);
                             if (saved) cached = JSON.parse(saved);
                         } catch {}
-                        if (cached && Array.isArray(cached.commits) && cached.commits.length) {
+                        if (cached && Array.isArray(cached.commits)) {
                             commits = cached.commits;
-                            totalPages = Number(cached.totalPages) || 1;
                         } else {
                             const fallbackResponse = await fetch(fallbackURL, { cache: "no-store" });
                             if (!fallbackResponse.ok) throw apiError;
-                            const allFallbackCommits = await fallbackResponse.json();
-                            if (!Array.isArray(allFallbackCommits)) throw apiError;
-                            totalPages = Math.max(1, Math.ceil(allFallbackCommits.length / PER_PAGE));
-                            commits = allFallbackCommits.slice(
-                                (currentPage - 1) * PER_PAGE,
-                                currentPage * PER_PAGE
-                            );
+                            commits = await fallbackResponse.json();
+                            if (!Array.isArray(commits)) throw apiError;
                         }
+                        totalPages = Math.max(1, Math.ceil(commits.length / PER_PAGE));
                     }
+                    currentPage = Math.min(currentPage, totalPages);
+                    commits = commits.slice(
+                        (currentPage - 1) * PER_PAGE,
+                        currentPage * PER_PAGE
+                    );
                     if (request !== requestId) return;
                     if (commits.length === 0 && currentPage > totalPages) {
                         return showPage(totalPages, options);
