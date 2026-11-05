@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <filter id="dark-brownbox" color-interpolation-filters="sRGB">
+      <feColorMatrix type="hueRotate" values="255"/>
+      <feColorMatrix type="saturate" values="1.25"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0.78"/>
+        <feFuncG type="linear" slope="0.78"/>
+        <feFuncB type="linear" slope="0.92"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <image x="0" y="0" width="100" height="100" preserveAspectRatio="none"
+    href="https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png"
+    xlink:href="https://raw.githubusercontent.com/yoann256/GDBrowser-Maintained/master/assets/brownbox.png"
+    filter="url(#dark-brownbox)"/>
+</svg>
