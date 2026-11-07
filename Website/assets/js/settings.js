@@ -4,7 +4,6 @@ const theme=window.Jack105WATheme,form=document.getElementById("settings-form"),
 const keys=["backgroundTop","backgroundBottom","panel","panelBorder","accent","text"];
 const inputs=Object.fromEntries(keys.map(k=>[k,document.getElementById("setting-"+k)]));
 const presets={
-classic:theme.defaults,
 midnight:{backgroundTop:"#171b35",backgroundBottom:"#080b18",panel:"#292d49",panelBorder:"#11152b",accent:"#8c9eff",text:"#ffffff"},
 ocean:{backgroundTop:"#00a6b8",backgroundBottom:"#003c68",panel:"#12617a",panelBorder:"#07394f",accent:"#ffe082",text:"#ffffff"},
 forest:{backgroundTop:"#347c50",backgroundBottom:"#102f28",panel:"#356b48",panelBorder:"#1b422b",accent:"#d9ed92",text:"#ffffff"},
