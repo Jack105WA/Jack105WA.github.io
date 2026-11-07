@@ -103,11 +103,6 @@
         currentItems = buildItems(context);
         menu.replaceChildren();
 
-        const heading = document.createElement("div");
-        heading.className = "jctx-heading";
-        heading.textContent = "Jack105WA";
-        menu.appendChild(heading);
-
         currentItems.forEach(entry => {
             if (!entry) {
                 const separator = document.createElement("div");
@@ -158,8 +153,9 @@
         menu.style.top = top + "px";
         menu.style.visibility = "visible";
         requestAnimationFrame(() => {
+            // Keep the menu from selecting or focusing an item on open.
+            // Keyboard navigation begins only after the user presses an arrow key.
             menu.dataset.open = "true";
-            menu.querySelector(".jctx-item:not(:disabled)")?.focus({ preventScroll: true });
         });
     };
 
