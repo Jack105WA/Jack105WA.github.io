@@ -128,7 +128,10 @@
         #blog-editor-panel form *,
         #notification-manager,
         #notification-manager > :not(.admin-editor-header),
-        #notification-manager > :not(.admin-editor-header) * {
+        #theme-manager,
+        #theme-manager > :not(.admin-editor-header),
+        #notification-manager > :not(.admin-editor-header) *,
+        #theme-manager > :not(.admin-editor-header) * {
             font-family: Arial, sans-serif !important;
         }
 
@@ -136,6 +139,7 @@
         #blog-editor-panel .admin-editor-header *,
         #notification-manager .admin-editor-header,
         #notification-manager .admin-editor-header *,
+        #theme-manager .admin-editor-header *,
         #notification-preview {
             font-family: "Pusab", sans-serif !important;
         }
@@ -466,6 +470,40 @@
 
         #notification-manager h3 {
             color: var(--admin-yellow);
+        }
+
+
+        #theme-manager,
+        #theme-manager form,
+        #theme-manager form * {
+            font-family: Arial, sans-serif !important;
+        }
+
+        #theme-manager .admin-editor-header,
+        #theme-manager .admin-editor-header * {
+            font-family: "Pusab", sans-serif !important;
+        }
+
+        .theme-color-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+        }
+
+        .theme-color-grid input[type="color"] {
+            height: 46px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        #theme-manager .admin-actions button {
+            flex: 1 1 180px;
+        }
+
+        @media (max-width: 420px) {
+            .theme-color-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
         }
 
         @media (min-width: 1200px) {
@@ -870,6 +908,53 @@
                             aria-live="polite"
                         ></p>
                     </section>
+
+                    <!-- SHARED THEME CUSTOMIZER -->
+                    <section id="theme-manager" hidden>
+                        <div class="admin-editor-header">
+                            <h2 class="admin-heading">Live Theme Customizer</h2>
+                            <p class="admin-muted">Global Site Theme</p>
+                        </div>
+
+                        <p class="admin-muted">
+                            Changes preview instantly in this browser. Publish Theme saves the
+                            palette to Firestore and updates every visitor across the entire site.
+                        </p>
+
+                        <form id="theme-form" class="admin-form">
+                            <div class="admin-field">
+                                <label for="theme-preset">Theme Preset</label>
+                                <select id="theme-preset">
+                                    <option value="custom">Custom colors</option>
+                                    <option value="classic">Classic Geometry Dash</option>
+                                    <option value="midnight">Midnight</option>
+                                    <option value="ocean">Ocean</option>
+                                    <option value="forest">Forest</option>
+                                    <option value="sunset">Sunset</option>
+                                </select>
+                            </div>
+
+                            <div class="theme-color-grid">
+                                <div class="admin-field"><label for="theme-backgroundTop">Background Top</label><input id="theme-backgroundTop" type="color" value="#0065fd"></div>
+                                <div class="admin-field"><label for="theme-backgroundBottom">Background Bottom</label><input id="theme-backgroundBottom" type="color" value="#002e73"></div>
+                                <div class="admin-field"><label for="theme-panel">Panel Background</label><input id="theme-panel" type="color" value="#995533"></div>
+                                <div class="admin-field"><label for="theme-panelBorder">Panel Border</label><input id="theme-panelBorder" type="color" value="#63351e"></div>
+                                <div class="admin-field"><label for="theme-accent">Accent / Headings</label><input id="theme-accent" type="color" value="#ffc800"></div>
+                                <div class="admin-field"><label for="theme-buttonTop">Button Top</label><input id="theme-buttonTop" type="color" value="#0065fd"></div>
+                                <div class="admin-field"><label for="theme-buttonBottom">Button Bottom</label><input id="theme-buttonBottom" type="color" value="#002e73"></div>
+                                <div class="admin-field"><label for="theme-text">Panel Text</label><input id="theme-text" type="color" value="#ffffff"></div>
+                            </div>
+
+                            <div class="admin-actions">
+                                <button class="gdButton nav-button blue-button" id="save-theme" type="submit"><span>Publish Theme</span></button>
+                                <button class="gdButton nav-button green-button" id="reset-theme" type="button"><span>Restore Default</span></button>
+                            </div>
+                        </form>
+
+                        <p id="theme-status" class="admin-status admin-notice" aria-live="polite">
+                            Loading theme settings...
+                        </p>
+                    </section>
                 </section>
 
                 <section id="editor-locked" class="admin-card">
@@ -897,6 +982,7 @@
                         <select id="admin-function">
                             <option value="posts" selected>Manage Blog Posts</option>
                             <option value="notification">Manage Site Notification</option>
+                            <option value="theme">Live Theme Customizer</option>
                         </select>
                     </div>
 
@@ -980,6 +1066,7 @@
                 functionDescription: $("admin-function-description"),
                 blogEditor: $("blog-editor-panel"),
                 notificationManager: $("notification-manager"),
+                themeManager: $("theme-manager"),
                 existingPosts: $("existing-posts-section"),
                 existingPostsContent: $("existing-posts-content")
             };
@@ -1040,22 +1127,24 @@
             function updateSelectedFunction() {
                 const selected = elements.adminFunction.value;
                 const showNotification = selected === "notification";
+                const showTheme = selected === "theme";
 
-                elements.blogEditor.hidden = showNotification;
+                elements.blogEditor.hidden = showNotification || showTheme;
                 elements.notificationManager.hidden = !showNotification;
+                elements.themeManager.hidden = !showTheme;
 
                 if (showNotification) {
                     elements.functionDescription.textContent =
                         "Edit the site-wide notification banner in the center panel.";
-
-                    // Keep the lower-right section and its space, but empty its contents.
-                    elements.existingPostsContent.hidden = true;
+                } else if (showTheme) {
+                    elements.functionDescription.textContent =
+                        "Customize the shared site palette and publish it for every visitor.";
                 } else {
                     elements.functionDescription.textContent =
                         "Create, edit, publish, and manage your blog posts.";
-
-                    elements.existingPostsContent.hidden = false;
                 }
+
+                elements.existingPostsContent.hidden = showNotification || showTheme;
             }
 
             elements.adminFunction.addEventListener("change", updateSelectedFunction);
