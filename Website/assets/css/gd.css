@@ -995,3 +995,47 @@ button:focus-visible {
     border-radius: 17px;
 }
 
+
+
+/* Shared live theme variables */
+:root {
+    --button-top: var(--blue-top);
+    --button-bottom: var(--blue-bottom);
+    --site-text: #fff;
+}
+#everything.levelBG {
+    background-image: linear-gradient(var(--blue-top), var(--blue-bottom));
+}
+.welcome-panel,
+.sidebar-panel,
+.inner-panel {
+    background-color: var(--brown);
+    color: var(--site-text);
+}
+.welcome-panel,
+.sidebar-panel {
+    border-color: var(--brown-border);
+}
+.inner-panel {
+    background-color: color-mix(in srgb, var(--brown) 88%, #000 12%);
+}
+.sidebar-heading,
+.welcome-panel h2,
+.welcome-panel h3 {
+    color: var(--gold);
+}
+.gdButton.blue-button {
+    background-image: linear-gradient(var(--button-top), var(--button-bottom));
+}
+html[data-custom-theme="true"] .welcome-panel,
+html[data-custom-theme="true"] .sidebar-panel {
+    border-image: none;
+    border-style: solid;
+    border-width: 5px;
+    border-color: var(--brown-border);
+}
+html[data-custom-theme="true"] .welcome-panel,
+html[data-custom-theme="true"] .sidebar-panel,
+html[data-custom-theme="true"] .inner-panel {
+    color: var(--site-text);
+}
