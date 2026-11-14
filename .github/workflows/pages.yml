@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - beta
   workflow_dispatch:
 
 permissions:
@@ -22,15 +23,73 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout production site
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
-      - name: Generate latest commit metadata and changelog fallback
+      - name: Checkout beta branch
+        uses: actions/checkout@v4
+        with:
+          ref: beta
+          path: beta-source
+          fetch-depth: 1
+
+      - name: Add beta website under /beta
+        run: |
+          test -d beta-source/Website
+          mkdir -p Website/beta
+          cp -a beta-source/Website/. Website/beta/
+          rm -rf beta-source
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          beta = Path("Website/beta")
+          text_extensions = {
+              ".html", ".htm", ".css", ".js", ".mjs", ".json",
+              ".xml", ".txt", ".svg", ".webmanifest"
+          }
+
+          for path in beta.rglob("*"):
+              if not path.is_file() or path.suffix.lower() not in text_extensions:
+                  continue
+
+              try:
+                  content = path.read_text(encoding="utf-8")
+              except UnicodeDecodeError:
+                  continue
+
+              # Prefix root-relative URLs so the beta copy loads its own
+              # assets and keeps navigation inside /beta.
+              content = re.sub(
+                  r'(["\'\x60])/(?!/|beta/)',
+                  r'\1/beta/',
+                  content
+              )
+              content = re.sub(
+                  r'url\(\s*/(?!/|beta/)',
+                  'url(/beta/',
+                  content,
+                  flags=re.IGNORECASE
+              )
+
+              # Ensure any ordinary relative links resolve from /beta/.
+              content = re.sub(
+                  r'(<head(?:\s[^>]*)?>)',
+                  r'\1\n    <base href="/beta/">',
+                  content,
+                  count=1,
+                  flags=re.IGNORECASE
+              ) if path.suffix.lower() in {".html", ".htm"} else content
+
+              path.write_text(content, encoding="utf-8")
+
+      - name: Generate production commit metadata and changelog fallback
         run: |
           python3 <<'PY'
-          import datetime
           import json
           import subprocess
 
@@ -71,7 +130,7 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload Website folder
+      - name: Upload complete website
         uses: actions/upload-pages-artifact@v3
         with:
           path: Website
