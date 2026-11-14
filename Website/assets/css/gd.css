@@ -1259,3 +1259,52 @@ body {
 .jack105wa-context-menu {
     background: rgba(12, 14, 20, 0.97) !important;
 }
+
+
+/* Context menu: use the same dark glass surface as the site panels. */
+#jack105wa-context-menu {
+    color: #fff !important;
+    background: rgba(12, 14, 20, 0.66) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 20px !important;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+    -webkit-backdrop-filter: blur(3px) saturate(110%) !important;
+    backdrop-filter: blur(3px) saturate(110%) !important;
+    font-family: Arial, sans-serif !important;
+}
+#jack105wa-context-menu .jctx-heading {
+    color: #fff !important;
+    font-family: "Pusab", Arial, sans-serif !important;
+    text-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-item,
+#jack105wa-context-menu .jctx-item .jctx-label {
+    color: #fff !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-item:hover,
+#jack105wa-context-menu .jctx-item:focus-visible {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    outline: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+#jack105wa-context-menu .jctx-item:disabled {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-icon {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+#jack105wa-context-menu .jctx-shortcut {
+    color: rgba(255, 255, 255, 0.58) !important;
+}
+#jack105wa-context-menu .jctx-separator {
+    background: rgba(255, 255, 255, 0.16) !important;
+}
