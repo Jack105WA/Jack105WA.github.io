@@ -1056,3 +1056,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
     #jack105wa-starfield { opacity: 0.85; }
 }
+
+/* Admin surfaces follow the same glass treatment. */
+.admin-card {
+    border: 1px solid var(--star-glass-border) !important;
+    border-radius: 16px !important;
+    background: var(--star-glass) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28), inset 0 1px 0 var(--star-glass-highlight) !important;
+}
