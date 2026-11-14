@@ -83,13 +83,3 @@
 }
 
 
-/* Beta button palette: restore the site's red buttons consistently. */
-.gdButton.nav-button,
-.gdButton.nav-button.home-button,
-.gdButton.nav-button.blue-button,
-.gdButton.nav-button.green-button,
-.gdButton.nav-button.orange-button,
-.gdButton.nav-button.purple-button,
-.gdButton.nav-button.red-button {
-    background: linear-gradient(#ff5555, #d90000) !important;
-}
