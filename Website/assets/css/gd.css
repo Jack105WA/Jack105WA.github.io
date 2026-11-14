@@ -1096,3 +1096,37 @@ body {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
+
+
+/* STARGLASS refinement: stronger panel tint with minimal blur. */
+:root {
+    --star-glass: rgba(12, 14, 20, 0.18);
+    --star-glass-inner: rgba(12, 14, 20, 0.14);
+}
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.18) !important;
+    -webkit-backdrop-filter: blur(3px) saturate(110%);
+    backdrop-filter: blur(3px) saturate(110%);
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.14) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(108%);
+    backdrop-filter: blur(2px) saturate(108%);
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.25) !important;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+@media (max-width: 700px) {
+    .welcome-panel,
+    .sidebar-panel,
+    .admin-card {
+        -webkit-backdrop-filter: blur(2px) saturate(108%);
+        backdrop-filter: blur(2px) saturate(108%);
+    }
+}
