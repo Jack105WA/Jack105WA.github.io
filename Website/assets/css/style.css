@@ -935,3 +935,386 @@ html[data-custom-theme="true"] .sidebar-panel {
 html[data-custom-theme="true"] .welcome-panel,
 html[data-custom-theme="true"] .sidebar-panel,
 html[data-custom-theme="true"] .inner-panel { color: var(--site-text); }
+
+
+/* ==========================================================================
+   STARGLASS — Beta visual redesign
+   ========================================================================== */
+:root {
+    --star-glass: rgba(13, 19, 39, 0.58);
+    --star-glass-inner: rgba(18, 27, 53, 0.48);
+    --star-glass-border: rgba(190, 211, 255, 0.2);
+    --star-glass-highlight: rgba(255, 255, 255, 0.12);
+}
+html, body {
+    background: #050817 !important;
+}
+body {
+    position: relative;
+    isolation: isolate;
+}
+#jack105wa-starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    image-rendering: pixelated;
+}
+#everything.levelBG {
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
+    background-image: none !important;
+}
+.site-layout {
+    position: relative;
+}
+.welcome-panel,
+.sidebar-panel {
+    border: 1px solid var(--star-glass-border) !important;
+    border-image: none !important;
+    border-radius: 20px !important;
+    background: var(--star-glass) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    backdrop-filter: blur(22px) saturate(145%);
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 var(--star-glass-highlight),
+        inset 0 0 35px rgba(104, 135, 220, 0.045) !important;
+}
+.welcome-panel {
+    padding: clamp(16px, 2.2vw, 28px);
+}
+.sidebar-panel {
+    padding: 18px;
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    border: 1px solid rgba(190, 211, 255, 0.15) !important;
+    border-radius: 15px !important;
+    background: var(--star-glass-inner) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(135%);
+    backdrop-filter: blur(16px) saturate(135%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 10px 28px rgba(0, 0, 0, 0.12) !important;
+}
+.site-logo h1 {
+    color: #f5f7ff !important;
+    -webkit-text-fill-color: #f5f7ff !important;
+    -webkit-text-stroke: 1px rgba(9, 14, 30, 0.9) !important;
+    text-shadow:
+        0 4px 0 rgba(0, 0, 0, 0.35),
+        0 0 28px rgba(146, 174, 255, 0.42) !important;
+}
+.sidebar-heading,
+.section-heading h2,
+.inner-panel h3,
+.blog-post h3 {
+    color: #dbe5ff !important;
+    text-shadow: 0 2px 12px rgba(117, 151, 255, 0.25) !important;
+}
+.inner-panel p,
+.blog-post p,
+.sidebar-stats p {
+    color: rgba(245, 248, 255, 0.9);
+}
+.sidebar-stats {
+    border-top-color: rgba(190, 211, 255, 0.16);
+}
+.site-footer {
+    color: rgba(232, 239, 255, 0.65);
+}
+.site-footer a,
+.post-link {
+    color: #b9ceff;
+}
+.gdButton.nav-button {
+    border-radius: 11px;
+    border-color: rgba(5, 9, 22, 0.9);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+        0 5px 18px rgba(0, 0, 0, 0.24);
+}
+#jack105wa-site-notification {
+    border: 1px solid rgba(190, 211, 255, 0.2) !important;
+    background: rgba(17, 25, 49, 0.78) !important;
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+@media (max-width: 700px) {
+    .welcome-panel,
+    .sidebar-panel {
+        -webkit-backdrop-filter: blur(16px) saturate(135%);
+        backdrop-filter: blur(16px) saturate(135%);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #jack105wa-starfield { opacity: 0.85; }
+}
+
+/* Admin surfaces follow the same glass treatment. */
+.admin-card {
+    border: 1px solid var(--star-glass-border) !important;
+    border-radius: 16px !important;
+    background: var(--star-glass) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28), inset 0 1px 0 var(--star-glass-highlight) !important;
+}
+
+
+
+/* STARGLASS refinement: ultra-light glass so the starfield stays visible. */
+:root {
+    --star-glass: rgba(12, 14, 20, 0.035);
+    --star-glass-inner: rgba(12, 14, 20, 0.025);
+    --star-glass-border: rgba(255, 255, 255, 0.105);
+    --star-glass-highlight: rgba(255, 255, 255, 0.09);
+}
+.welcome-panel, .sidebar-panel, .admin-card {
+    background: rgba(12, 14, 20, 0.035) !important;
+    border-color: rgba(255,255,255,.105) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(105%);
+    backdrop-filter: blur(10px) saturate(105%);
+    box-shadow: 0 16px 45px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+.inner-panel, .blog-post, .quick-links {
+    background: rgba(12,14,20,.025) !important;
+    border-color: rgba(255,255,255,.075) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(102%);
+    backdrop-filter: blur(8px) saturate(102%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+#jack105wa-site-notification {
+    background: rgba(12,14,20,.10) !important;
+    border-color: rgba(255,255,255,.10) !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+
+/* STARGLASS refinement: stronger panel tint with minimal blur. */
+:root {
+    --star-glass: rgba(12, 14, 20, 0.18);
+    --star-glass-inner: rgba(12, 14, 20, 0.14);
+}
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.18) !important;
+    -webkit-backdrop-filter: blur(3px) saturate(110%);
+    backdrop-filter: blur(3px) saturate(110%);
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.14) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(108%);
+    backdrop-filter: blur(2px) saturate(108%);
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.25) !important;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+@media (max-width: 700px) {
+    .welcome-panel,
+    .sidebar-panel,
+    .admin-card {
+        -webkit-backdrop-filter: blur(2px) saturate(108%);
+        backdrop-filter: blur(2px) saturate(108%);
+    }
+}
+
+
+/* Header typography: clean white text with no glow. */
+.site-logo h1,
+.site-header h1,
+.welcome-panel h1,
+.welcome-panel h2,
+.welcome-panel h3,
+.welcome-panel h4,
+.sidebar-panel h1,
+.sidebar-panel h2,
+.sidebar-panel h3,
+.sidebar-panel h4,
+.sidebar-heading,
+.section-heading,
+.section-heading h2,
+.inner-panel h1,
+.inner-panel h2,
+.inner-panel h3,
+.inner-panel h4,
+.blog-post h1,
+.blog-post h2,
+.blog-post h3,
+.blog-post h4,
+.admin-card h1,
+.admin-card h2,
+.admin-card h3,
+.admin-card h4 {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    text-shadow: none !important;
+}
+.site-logo h1 {
+    -webkit-text-stroke: 0 !important;
+}
+
+
+/* STARGLASS: stronger, less transparent surfaces. */
+:root {
+    --star-glass: rgba(12, 14, 20, 0.42);
+    --star-glass-inner: rgba(12, 14, 20, 0.34);
+}
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.42) !important;
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.34) !important;
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.48) !important;
+}
+
+/* Custom right-click menu matches the site's dark glass panels. */
+#custom-context-menu,
+.custom-context-menu,
+#context-menu,
+.context-menu,
+.jack105wa-context-menu {
+    color: #fff !important;
+    background: rgba(12, 14, 20, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(115%) !important;
+    backdrop-filter: blur(8px) saturate(115%) !important;
+}
+#custom-context-menu *,
+.custom-context-menu *,
+#context-menu *,
+.context-menu *,
+.jack105wa-context-menu * {
+    color: #fff;
+    text-shadow: none !important;
+}
+#custom-context-menu button,
+.custom-context-menu button,
+#context-menu button,
+.context-menu button,
+.jack105wa-context-menu button,
+#custom-context-menu .menu-item,
+.custom-context-menu .menu-item,
+#context-menu .menu-item,
+.context-menu .menu-item,
+.jack105wa-context-menu .menu-item {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+#custom-context-menu button:hover,
+.custom-context-menu button:hover,
+#context-menu button:hover,
+.context-menu button:hover,
+.jack105wa-context-menu button:hover,
+#custom-context-menu .menu-item:hover,
+.custom-context-menu .menu-item:hover,
+#context-menu .menu-item:hover,
+.context-menu .menu-item:hover,
+.jack105wa-context-menu .menu-item:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+
+/* Stronger opacity pass: keep the glass look, but make surfaces easier to read. */
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.66) !important;
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.56) !important;
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.72) !important;
+}
+#custom-context-menu,
+.custom-context-menu,
+#context-menu,
+.context-menu,
+.jack105wa-context-menu {
+    background: rgba(12, 14, 20, 0.97) !important;
+}
+
+
+/* Context menu: use the same dark glass surface as the site panels. */
+#jack105wa-context-menu {
+    color: #fff !important;
+    background: rgba(12, 14, 20, 0.66) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 20px !important;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+    -webkit-backdrop-filter: blur(3px) saturate(110%) !important;
+    backdrop-filter: blur(3px) saturate(110%) !important;
+    font-family: Arial, sans-serif !important;
+}
+#jack105wa-context-menu .jctx-heading {
+    color: #fff !important;
+    font-family: "Pusab", Arial, sans-serif !important;
+    text-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-item,
+#jack105wa-context-menu .jctx-item .jctx-label {
+    color: #fff !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-item:hover,
+#jack105wa-context-menu .jctx-item:focus-visible {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    outline: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+#jack105wa-context-menu .jctx-item:disabled {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+#jack105wa-context-menu .jctx-icon {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+#jack105wa-context-menu .jctx-shortcut {
+    color: rgba(255, 255, 255, 0.58) !important;
+}
+#jack105wa-context-menu .jctx-separator {
+    background: rgba(255, 255, 255, 0.16) !important;
+}
+
+
+/* Blog post footer text stays fully white across generated post markup. */
+.post-footer,
+.post-footer *,
+.post-footer a,
+.post-footer strong {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
