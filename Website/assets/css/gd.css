@@ -1308,3 +1308,13 @@ body {
 #jack105wa-context-menu .jctx-separator {
     background: rgba(255, 255, 255, 0.16) !important;
 }
+
+
+/* Blog post footer text stays fully white across generated post markup. */
+.post-footer,
+.post-footer *,
+.post-footer a,
+.post-footer strong {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
