@@ -1165,3 +1165,74 @@ body {
 .site-logo h1 {
     -webkit-text-stroke: 0 !important;
 }
+
+
+/* STARGLASS: stronger, less transparent surfaces. */
+:root {
+    --star-glass: rgba(12, 14, 20, 0.42);
+    --star-glass-inner: rgba(12, 14, 20, 0.34);
+}
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.42) !important;
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.34) !important;
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.48) !important;
+}
+
+/* Custom right-click menu matches the site's dark glass panels. */
+#custom-context-menu,
+.custom-context-menu,
+#context-menu,
+.context-menu,
+.jack105wa-context-menu {
+    color: #fff !important;
+    background: rgba(12, 14, 20, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(115%) !important;
+    backdrop-filter: blur(8px) saturate(115%) !important;
+}
+#custom-context-menu *,
+.custom-context-menu *,
+#context-menu *,
+.context-menu *,
+.jack105wa-context-menu * {
+    color: #fff;
+    text-shadow: none !important;
+}
+#custom-context-menu button,
+.custom-context-menu button,
+#context-menu button,
+.context-menu button,
+.jack105wa-context-menu button,
+#custom-context-menu .menu-item,
+.custom-context-menu .menu-item,
+#context-menu .menu-item,
+.context-menu .menu-item,
+.jack105wa-context-menu .menu-item {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+#custom-context-menu button:hover,
+.custom-context-menu button:hover,
+#context-menu button:hover,
+.context-menu button:hover,
+.jack105wa-context-menu button:hover,
+#custom-context-menu .menu-item:hover,
+.custom-context-menu .menu-item:hover,
+#context-menu .menu-item:hover,
+.context-menu .menu-item:hover,
+.jack105wa-context-menu .menu-item:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
