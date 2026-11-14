@@ -1236,3 +1236,26 @@ body {
 .jack105wa-context-menu .menu-item:hover {
     background: rgba(255, 255, 255, 0.12) !important;
 }
+
+
+/* Stronger opacity pass: keep the glass look, but make surfaces easier to read. */
+.welcome-panel,
+.sidebar-panel,
+.admin-card {
+    background: rgba(12, 14, 20, 0.66) !important;
+}
+.inner-panel,
+.blog-post,
+.quick-links {
+    background: rgba(12, 14, 20, 0.56) !important;
+}
+#jack105wa-site-notification {
+    background: rgba(12, 14, 20, 0.72) !important;
+}
+#custom-context-menu,
+.custom-context-menu,
+#context-menu,
+.context-menu,
+.jack105wa-context-menu {
+    background: rgba(12, 14, 20, 0.97) !important;
+}
