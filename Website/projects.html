@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="https://jack105wa.github.io/projects">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Projects | Jack105WA">
+    <meta property="og:description" content="Public GitHub projects by Jack105WA">
+    <meta property="og:image" content="https://jack105wa.github.io/assets/favicon.png">
+    <meta name="theme-color" content="#9900ff">
+    <title>Projects | Jack105WA</title>
+
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/nav-buttons.css">
+    <link rel="stylesheet" href="/assets/css/cursors.css">
+
+    <style>
+        .projects-intro {
+            margin: 0 0 18px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 190px;
+            padding: 16px;
+            border: 2px solid rgba(0, 0, 0, 0.38);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.28);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            color: #fff;
+            text-align: left;
+        }
+
+        .project-card h3 {
+            margin: 0 0 9px;
+            overflow-wrap: anywhere;
+            color: var(--gold);
+            font-family: "Pusab", Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .project-card h3 a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .project-card h3 a:hover {
+            text-decoration: underline;
+        }
+
+        .project-description {
+            flex: 1;
+            margin: 0 0 16px;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px 13px;
+            color: rgba(255, 255, 255, 0.75);
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .project-language {
+            color: #ffe06b;
+            font-weight: 700;
+        }
+
+        .projects-status {
+            margin: 20px 0;
+            color: #fff;
+            font-family: "Pusab", sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        .projects-profile-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 520px) {
+            .projects-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="everything" class="levelBG">
+        <div class="site-layout">
+            <main class="page-content">
+                <section class="brownBox welcome-panel" aria-labelledby="projects-heading">
+                    <div class="section-heading">
+                        <h2 id="projects-heading">My Projects</h2>
+                        <p>My public GitHub repositories</p>
+                    </div>
+
+                    <p class="projects-intro">
+                        Browse my projects and open any repository on GitHub.
+                    </p>
+
+                    <div id="projects-status" class="projects-status" role="status" aria-live="polite">
+                        Loading public repositories...
+                    </div>
+                    <div id="projects-grid" class="projects-grid"></div>
+
+                    <div class="projects-profile-link">
+                        <a class="gdButton nav-button red-button"
+                           href="https://github.com/Jack105WA"
+                           target="_blank" rel="noopener noreferrer">
+                            <span>GitHub Profile</span>
+                        </a>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="site-sidebar" aria-label="Site navigation and statistics">
+                <section class="brownBox sidebar-panel">
+                    <h2 class="sidebar-heading">Navigation</h2>
+                    <nav class="sidebar-navigation" aria-label="Main navigation">
+                        <a class="gdButton nav-button blue-button" href="/"><span>Home</span></a>
+                        <a class="gdButton nav-button green-button" href="/blog"><span>Blog</span></a>
+                        <a class="gdButton nav-button red-button" href="/projects" aria-current="page"><span>Projects</span></a>
+                        <a class="gdButton nav-button orange-button" href="/updates"><span>Updates</span></a>
+                    </nav>
+
+                    <div class="sidebar-stats" aria-label="Website statistics">
+                        <h2 class="sidebar-heading">Website Stats</h2>
+                        <p>Hits: <strong id="nc-hits">...</strong></p>
+                        <p>Last updated: <strong id="nc-last_updated">...</strong></p>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        const projectsGrid = document.getElementById("projects-grid");
+        const projectsStatus = document.getElementById("projects-status");
+
+        function addProject(repo) {
+            const card = document.createElement("article");
+            card.className = "project-card";
+
+            const heading = document.createElement("h3");
+            const link = document.createElement("a");
+            link.href = repo.html_url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = repo.name;
+            heading.appendChild(link);
+
+            const description = document.createElement("p");
+            description.className = "project-description";
+            description.textContent = repo.description || "No description provided.";
+
+            const meta = document.createElement("div");
+            meta.className = "project-meta";
+
+            if (repo.language) {
+                const language = document.createElement("span");
+                language.className = "project-language";
+                language.textContent = repo.language;
+                meta.appendChild(language);
+            }
+
+            const stars = document.createElement("span");
+            stars.textContent = "★ " + repo.stargazers_count;
+            meta.appendChild(stars);
+
+            const updated = document.createElement("span");
+            const updatedDate = new Date(repo.pushed_at);
+            updated.textContent = "Updated " + updatedDate.toLocaleDateString();
+            meta.appendChild(updated);
+
+            card.append(heading, description, meta);
+            projectsGrid.appendChild(card);
+        }
+
+        async function loadProjects() {
+            try {
+                const response = await fetch(
+                    "https://api.github.com/users/Jack105WA/repos?type=public&sort=updated&per_page=100",
+                    { headers: { "Accept": "application/vnd.github+json" } }
+                );
+
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 429) {
+                        throw new Error("GitHub's API rate limit was reached. Please try again later.");
+                    }
+                    throw new Error("GitHub returned an error (" + response.status + ").");
+                }
+
+                const repositories = await response.json();
+                const publicRepos = repositories
+                    .filter(repo => !repo.private)
+                    .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+                if (!publicRepos.length) {
+                    projectsStatus.textContent = "No public repositories were found.";
+                    return;
+                }
+
+                publicRepos.forEach(addProject);
+                projectsStatus.textContent = publicRepos.length + " public repositories";
+            } catch (error) {
+                projectsStatus.textContent =
+                    error.message || "Could not load GitHub repositories.";
+            }
+        }
+
+        loadProjects();
+    </script>
+
+    <script type="module" src="/assets/js/statget.js?v=3"></script>
+    <script defer src="/assets/js/context-menu.js?v=1"></script>
+    <script type="module" src="/assets/js/theme.js?v=1"></script>
+</body>
+</html>
